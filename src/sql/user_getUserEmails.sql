@@ -1,0 +1,1 @@
+SELECT email FROM userEmails WHERE userId = ? ORDER BY id DESC

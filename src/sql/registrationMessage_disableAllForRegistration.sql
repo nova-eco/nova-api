@@ -1,0 +1,1 @@
+UPDATE registrationMessages SET isEnabled = ? WHERE registrationId = ?

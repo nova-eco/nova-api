@@ -1,0 +1,1 @@
+UPDATE sessions SET validUntilTimestamp = ? WHERE id = ?

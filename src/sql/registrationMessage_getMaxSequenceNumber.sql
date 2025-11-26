@@ -1,0 +1,1 @@
+SELECT MAX(sequenceNumber) AS maxSeq FROM registrationMessages WHERE registrationId = ?

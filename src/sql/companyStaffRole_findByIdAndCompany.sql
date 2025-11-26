@@ -1,0 +1,1 @@
+SELECT * FROM companyStaffRoles WHERE id = ? AND companyId = ? LIMIT 1

@@ -1,0 +1,1 @@
+SELECT * FROM passwords WHERE userId = ? ORDER BY userPasswordSequenceNumber DESC LIMIT 1

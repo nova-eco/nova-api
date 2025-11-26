@@ -1,0 +1,38 @@
+#####################################################################
+#                                                                   #
+# Script:  compose.yaml                                             #
+#                                                                   #
+# Purpose: Docker compose definition for ecodev-exim-db             #
+#                                                                   #
+# Date:    11th May 2025                                            #
+#                                                                   #
+# Author:  ecodev admin <admin@ecodev>                              #
+#                                                                   #
+#####################################################################
+
+services:
+  nova-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NOVA_API__AUTHOR: ${NOVA_API__AUTHOR}
+        NOVA_API__SQL__FILE: ${NOVA_API__SQL__FILE}
+        NOVA_API__SQL__PATH: ${NOVA_API__SQL__PATH}
+    container_name: ${NOVA_API__CONTAINER_NAME}
+    env_file:
+      - path: ./.env
+        required: true
+    environment:
+      MARIADB_DATABASE: ${NOVA_API__NAME}
+      MARIADB_ROOT_PASSWORD: ${NOVA_API__USER__ROOT_PASS}
+      MARIADB_ROOT_USER: ${NOVA_API__USER__ROOT}
+      MARIADB_USERNAME: ${NOVA_API__USER__STD}
+    healthcheck:
+      interval: 10s
+      start_period: 30s
+      test: ['CMD', 'healthcheck.sh', '--connect', '--innodb_initialized']
+      timeout: 5s
+    ports:
+      - ${NOVA_API__PORT}:${NOVA_API__PORT}
+    restart: unless-stopped

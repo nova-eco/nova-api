@@ -1,0 +1,1 @@
+export { salonRouter } from './salonRouter';

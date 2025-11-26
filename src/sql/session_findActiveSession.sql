@@ -1,0 +1,1 @@
+SELECT * FROM sessions WHERE userId = ? AND validUntilTimestamp > ? ORDER BY validUntilTimestamp DESC LIMIT 1

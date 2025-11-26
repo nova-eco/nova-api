@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  db:
+    image: mariadb:lts-noble
+    container_name: nova-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: nova
+      MYSQL_USER: nova_user
+      MYSQL_PASSWORD: nova_password
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nova-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: nova-api
+    environment:
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: nova
+      DB_USER: nova_user
+      DB_PASSWORD: nova_password
+    ports:
+      - '3000:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - nova-network
+
+volumes:
+  db_data:
+
+networks:
+  nova-network:
+    driver: bridge

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "declaration": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "target": "es5",
+    "paths": {
+      "@app/*": ["./src/*"],
+      "@test/*": ["./test/*"]
+    }
+  },
+  "exclude": ["coverage", "dist", "node_modules"],
+  "files": ["src/index.ts"],
+  "include": [
+    "./src/**/*.ts",
+    "src/routers/chairRouter/chairRouter.bak",
+    "src/routers/registrationRouter/registrationRouterGetRegistrationVerified.bak",
+    "src/routers/registrationRouter/registrationRouter.bak",
+    "src/routers/registrationRouter/index.bak"
+  ]
+}

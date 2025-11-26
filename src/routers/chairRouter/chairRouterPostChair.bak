@@ -1,0 +1,167 @@
+import { routerOptions } from '@app/config';
+import {
+  ChairModel,
+  ChairServiceModel,
+  CompanyModel,
+  SalonModel,
+  SeatModel,
+  SeatTypeModel,
+  ServiceModel,
+} from '@app/models';
+import { Router } from 'express';
+
+export const chairRouterPostChair = Router(routerOptions).post(
+  '/',
+  async (req, res, next) => {
+    try {
+      const chairModel = new ChairModel();
+      const seatTypeModel = new SeatTypeModel();
+      const companyModel = new CompanyModel();
+      const serviceModel = new ServiceModel();
+      const salonModel = new SalonModel();
+      const seatModel = new SeatModel();
+      const chairServiceModel = new ChairServiceModel();
+      const { body } = req;
+
+      const seatTypeId =
+        typeof body['seatTypeId'] !== 'undefined' ? body['seatTypeId'] : null;
+      const haircutIds =
+        typeof body['haircutIds'] !== 'undefined' ? body['haircutIds'] : null;
+      const salonId = typeof body['salonId'] !== 'undefined' ? body['salonId'] : null;
+      const description =
+        typeof body['description'] !== 'undefined' ? body['description'] : null;
+      const name = typeof body['name'] !== 'undefined' ? body['name'] : null;
+
+      if (seatTypeId === null) {
+        throw new Error('chairRouterPostChair: seatTypeId: not found');
+      }
+
+      const seatType = await seatTypeModel.findByPk(seatTypeId);
+
+      if (seatType === null) {
+        throw new Error('chairRouterPostChair: seatType not found');
+      }
+
+      if (description === null) {
+        throw new Error('chairRouterPostChair: description not found');
+      }
+
+      if (name === null) {
+        throw new Error('chairRouterPostChair: name: not found');
+      }
+
+      /*
+       * Seat
+       */
+      const seat = await chairModel.create({
+        seatTypeId,
+        description,
+        name,
+      });
+
+      if (seat === null) {
+        throw new Error('chairRouterPostChair: seat: not created');
+      }
+
+      const seatId = typeof seat['id'] !== 'undefined' ? seat['id'] : null;
+
+      if (seatId === null) {
+        throw new Error('chairRouterPostChair: seatId: not found');
+      }
+
+      /*
+       * Salon seat
+       */
+      if (salonId === null) {
+        throw new Error('chairRouterPostChair: salonId: not found');
+      }
+
+      const salon = await salonModel.findByPk(salonId);
+
+      if (salon === null) {
+        throw new Error('chairRouterPostChair: salon: not found');
+      }
+
+      const seat = await chairModel.create({
+        seatId,
+        salonId,
+      });
+
+      if (seat === null) {
+        throw new Error('chairRouterPostChair: seat: not found');
+      }
+
+      const seatId = typeof seat['id'] !== 'undefined' ? seat['id'] : null;
+
+      if (seatId === null) {
+        throw new Error('chairRouterPostChair: seatId: not found');
+      }
+
+      /*
+       * Haircuts
+       */
+
+      const companyId =
+        typeof salon['companyId'] !== 'undefined' ? salon['companyId'] : null;
+
+      if (companyId === null) {
+        throw new Error('chairRouterPostChair: companyId: not found');
+      }
+
+      const company = await companyModel.findByPk(companyId);
+
+      if (company === null) {
+        throw new Error('chairRouterPostChair: company: not found');
+      }
+
+      if (haircutIds === null) {
+        throw new Error('chairRouterPostChair: haircutIds: not found');
+      }
+
+      if (Array.isArray(haircutIds) === false) {
+        throw new Error('chairRouterPostChair: haircutIds: not array');
+      }
+
+      for (const haircutId of haircutIds) {
+        if (haircutId === null) {
+          throw new Error('chairRouterPostChair: haircutId: not found');
+        }
+
+        const haircut = await serviceModel.findByPk(haircutId);
+
+        if (haircut === null) {
+          throw new Error('chairRouterPostChair: haircut: not found');
+        }
+
+        if (haircut['companyId'] !== company.id) {
+          throw new Error('chairRouterPostChair: haircut: invalid');
+        }
+
+        const chairHaircut = await chairServiceModel.create({
+          seatId,
+          serviceId: haircut.id,
+        });
+
+        if (chairHaircut === null) {
+          throw new Error('chairRouterPostChair: haircut reference: not added');
+        }
+      }
+
+      /*
+       * Response
+       */
+      const response = {
+        id: seatId,
+        seatTypeId: seat.seatTypeId,
+        haircutIds,
+        salonId: seat.salonId,
+        description: seat.description,
+        name: seat.name,
+      };
+
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  },
+);

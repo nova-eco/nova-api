@@ -1,0 +1,161 @@
+import { routerOptions } from '@app/config';
+import {
+  CompanyModel,
+  CompanyStaffRoleModel,
+  OrganisationModel,
+  RegistrationCompanyModel,
+  RegistrationCompanyStaffModel,
+  RegistrationModel,
+  RegistrationRegistrantModel,
+  UserEmailModel,
+  UserModel,
+} from '@app/models';
+import { Router } from 'express';
+
+export const registrationRouterPostRegistration = Router(routerOptions).post(
+  '/',
+  async (req, res, next) => {
+    try {
+      const { companyId, companyStaffRoleId, email, forename, surname, username } =
+        req.body;
+
+      const companyModel = new CompanyModel();
+      const companyStaffRoleModel = new CompanyStaffRoleModel();
+      const organisationModel = new OrganisationModel();
+      const registrationModel = new RegistrationModel();
+      const userModel = new UserModel();
+      const userEmailModel = new UserEmailModel();
+      const registrationCompanyModel = new RegistrationCompanyModel();
+      const registrationCompanyStaffModel = new RegistrationCompanyStaffModel();
+      const registrationRegistrantModel = new RegistrationRegistrantModel();
+
+      let companyStaffRole = null;
+      const company = await companyModel.findByPk(companyId);
+
+      if (company === null) {
+        throw new Error('registrationRouterPostRegistration: Company not found');
+      }
+
+      if (companyStaffRoleId) {
+        companyStaffRole = await companyStaffRoleModel.findByPk(companyStaffRoleId);
+
+        if (companyStaffRole === null) {
+          throw new Error(
+            'registrationRouterPostRegistration: CompanyStaffRole not found',
+          );
+        }
+      }
+
+      const organisationId =
+        typeof company['organisationId'] !== 'undefined' ? company.organisationId : null;
+
+      if (organisationId === null) {
+        throw new Error('registrationRouterPostRegistration: organisationId not found');
+      }
+
+      const organisation = await organisationModel.findByPk(organisationId);
+
+      if (organisation === null) {
+        throw new Error('Organisation not found');
+      }
+
+      const currentDate = new Date().toISOString();
+      const validRegistrationEmailResults =
+        await registrationModel.checkValidRegistrationByEmail(email, currentDate);
+      const validRegistrationWithReceivedEmail = validRegistrationEmailResults[0] || null;
+
+      if (validRegistrationWithReceivedEmail !== null) {
+        throw new Error('Email exists in a currently valid registration');
+      }
+
+      const doesEmailExistInUser = await userEmailModel.count({
+        email,
+      });
+
+      if (doesEmailExistInUser > 0) {
+        throw new Error('Email exists in a current user');
+      }
+
+      const doesUsernameExistInValidRegistration =
+        await registrationModel.countValidRegistrationsByUsername(username, currentDate);
+
+      if (doesUsernameExistInValidRegistration > 0) {
+        throw new Error('Username exists in a currently valid registration');
+      }
+
+      const doesUsernameExistInUser = await userModel.count({
+        username,
+      });
+
+      if (doesUsernameExistInUser > 0) {
+        throw new Error('Username exists in a current user');
+      }
+
+      const currentTimestamp = Date.now();
+      const validUntilTimestamp = currentTimestamp + 1000 * 60 * 60 * 24 * 2;
+      const validUntilDate = new Date(validUntilTimestamp).toISOString();
+      const validUntil = validUntilDate.toString();
+
+      const registration = await registrationModel.create({
+        organisationId,
+        validUntil,
+      });
+
+      if (registration === null) {
+        throw new Error('Registration not created');
+      }
+
+      const registrationCompany = await registrationCompanyModel.create({
+        companyId,
+        registrationId: registration.id,
+      });
+
+      if (registrationCompany === null) {
+        throw new Error('RegistrationCompany not created');
+      }
+
+      let registrationCompanyStaff;
+      if (companyStaffRole !== null) {
+        registrationCompanyStaff = await registrationCompanyStaffModel.create({
+          registrationCompanyId: registrationCompany.id,
+          companyStaffRoleId: companyStaffRole.id,
+        });
+
+        if (registrationCompanyStaff === null) {
+          throw new Error('RegistrationCompanyStaff not created');
+        }
+      }
+
+      const registrationRegistrant = await registrationRegistrantModel.create({
+        registrationId: registration.id,
+        email,
+        forename,
+        surname,
+        username,
+      });
+
+      if (registrationRegistrant === null) {
+        throw new Error('RegistrationRegistrant not created');
+      }
+
+      const response = {
+        id: registration.id,
+        companyId: registrationCompany.companyId,
+        email: registrationRegistrant.email,
+        forename: registrationRegistrant.forename,
+        isEnabled: registration.isEnabled,
+        companyStaffRoleId:
+          typeof registrationCompanyStaff !== 'undefined'
+            ? registrationCompanyStaff.companyStaffRoleId
+            : '',
+        surname: registrationRegistrant.surname,
+        username: registrationRegistrant.username,
+        validuntil: registration.validUntil,
+      };
+
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  },
+);

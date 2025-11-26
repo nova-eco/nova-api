@@ -1,0 +1,1776 @@
+{
+  "components": {
+    "schemas": {
+      "BookingPreRequest": {
+        "type": "object",
+        "required": [
+          "serviceId",
+          "staffId",
+          "startDateYear",
+          "startDateMonth",
+          "startDateMonthDay",
+          "userId",
+          "salonId",
+          "seatId",
+          "salonTimeSlotSequenceNumber"
+        ],
+        "properties": {
+          "serviceId": {
+            "type": "string",
+            "description": "The service/haircut ID"
+          },
+          "staffId": {
+            "type": "string",
+            "description": "The staff member ID"
+          },
+          "startDateYear": {
+            "type": "integer",
+            "description": "Year of the booking"
+          },
+          "startDateMonth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12,
+            "description": "Month of the booking"
+          },
+          "startDateMonthDay": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 31,
+            "description": "Day of the month"
+          },
+          "userId": {
+            "type": "string",
+            "description": "The user/client ID"
+          },
+          "salonId": {
+            "type": "string",
+            "description": "The salon ID"
+          },
+          "seatId": {
+            "type": "string",
+            "description": "The chair/seat ID"
+          },
+          "salonTimeSlotSequenceNumber": {
+            "type": "integer",
+            "description": "The time slot sequence number"
+          }
+        }
+      },
+      "BookingPre": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "serviceId": {
+            "type": "string"
+          },
+          "staffId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "salonId": {
+            "type": "string"
+          },
+          "seatId": {
+            "type": "string"
+          },
+          "startDateYear": {
+            "type": "integer"
+          },
+          "startDateMonth": {
+            "type": "integer"
+          },
+          "startDateMonthDay": {
+            "type": "integer"
+          },
+          "startSalonTimeSlotId": {
+            "type": "string"
+          },
+          "endSalonTimeSlotId": {
+            "type": "string"
+          },
+          "validUntilTimestampSeconds": {
+            "type": "integer",
+            "description": "Unix timestamp when the pre-booking expires"
+          }
+        }
+      },
+      "BookingRequest": {
+        "type": "object",
+        "required": ["bookingPreId", "servicePriceId"],
+        "properties": {
+          "bookingPreId": {
+            "type": "string",
+            "description": "The pre-booking ID to convert"
+          },
+          "servicePriceId": {
+            "type": "string",
+            "description": "The selected service price ID"
+          }
+        }
+      },
+      "BookingResponse": {
+        "type": "object",
+        "properties": {
+          "bookingId": {
+            "type": "string"
+          }
+        }
+      },
+      "ChairRequest": {
+        "type": "object",
+        "required": ["seatTypeId", "description", "name", "salonId", "haircutIds"],
+        "properties": {
+          "seatTypeId": {
+            "type": "string",
+            "description": "The type of seat/chair"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "salonId": {
+            "type": "string",
+            "description": "The salon this chair belongs to"
+          },
+          "haircutIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Services available at this chair"
+          }
+        }
+      },
+      "ChairUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "seatTypeId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "salonId": {
+            "type": "string"
+          },
+          "haircutIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Chair": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "seatTypeId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "salonId": {
+            "type": "string"
+          },
+          "haircutIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "LocationRequest": {
+        "type": "object",
+        "required": ["addressLineOne", "addressLineTwo", "geoCityId", "postcode"],
+        "properties": {
+          "addressLineOne": {
+            "type": "string"
+          },
+          "addressLineTwo": {
+            "type": "string"
+          },
+          "geoCityId": {
+            "type": "string"
+          },
+          "postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "LocationUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "addressLineOne": {
+            "type": "string"
+          },
+          "addressLineTwo": {
+            "type": "string"
+          },
+          "geoCityId": {
+            "type": "string"
+          },
+          "postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "addressLineOne": {
+            "type": "string"
+          },
+          "addressLineTwo": {
+            "type": "string"
+          },
+          "geoCityId": {
+            "type": "string"
+          },
+          "postcode": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["username", "password"],
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "forename": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "userStatusId": {
+            "type": "string"
+          }
+        }
+      },
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["companyId", "email", "forename", "surname", "username"],
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyStaffRoleId": {
+            "type": "string",
+            "description": "Optional staff role if registering as staff"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "forename": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "Registration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyStaffRoleId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "forename": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "isEnabled": {
+            "type": "boolean"
+          },
+          "validuntil": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RegistrationMessage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "registrationId": {
+            "type": "string"
+          },
+          "isEnabled": {
+            "type": "boolean"
+          },
+          "sequenceNumber": {
+            "type": "integer"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RegistrationVerifiedUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "registrationVerifiedId": {
+            "type": "string"
+          }
+        }
+      },
+      "SalonRequest": {
+        "type": "object",
+        "required": [
+          "companyId",
+          "locationId",
+          "description",
+          "name",
+          "temporalDurationId"
+        ],
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "locationId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "temporalDurationId": {
+            "type": "string",
+            "description": "Default time slot duration for the salon"
+          }
+        }
+      },
+      "SalonUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "locationId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "temporalDurationId": {
+            "type": "string"
+          }
+        }
+      },
+      "Salon": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "locationId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "temporalDurationId": {
+            "type": "string"
+          },
+          "seatIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "staffIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "salonOpenHourIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SalonOpenHourRequest": {
+        "type": "object",
+        "required": [
+          "openHourTypeId",
+          "salonId",
+          "dayIndexValue",
+          "twentyFourHourValue",
+          "minuteValue"
+        ],
+        "properties": {
+          "openHourTypeId": {
+            "type": "string",
+            "description": "Type of open hour (opening/closing)"
+          },
+          "salonId": {
+            "type": "string"
+          },
+          "dayIndexValue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6,
+            "description": "Day of week (0=Sunday, 6=Saturday)"
+          },
+          "twentyFourHourValue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 23,
+            "description": "Hour in 24-hour format"
+          },
+          "minuteValue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 59,
+            "description": "Minute value"
+          }
+        }
+      },
+      "SalonOpenHourUpdateRequest": {
+        "type": "object",
+        "required": ["openHourId", "salonId"],
+        "properties": {
+          "openHourId": {
+            "type": "string"
+          },
+          "openHourTypeId": {
+            "type": "string"
+          },
+          "salonId": {
+            "type": "string"
+          },
+          "dayIndexValue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "twentyFourHourValue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 23
+          },
+          "minuteValue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 59
+          }
+        }
+      },
+      "SalonOpenHour": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "openHourId": {
+            "type": "string"
+          },
+          "openHourTypeId": {
+            "type": "string"
+          },
+          "salonId": {
+            "type": "string"
+          },
+          "dayIndexValue": {
+            "type": "integer"
+          },
+          "twentyFourHourValue": {
+            "type": "integer"
+          },
+          "minuteValue": {
+            "type": "integer"
+          }
+        }
+      },
+      "ServiceRequest": {
+        "type": "object",
+        "required": ["companyId", "description", "name"],
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Service": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seatIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "haircutBookingCompletionRuleIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "haircutPriceIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "haircutStageIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Staff": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "staffRoleId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "username": {
+            "type": "string"
+          },
+          "forename": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "haircutIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "StaffUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "staffRoleId": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "forename": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          }
+        }
+      },
+      "TimeSlotAvailability": {
+        "type": "object",
+        "properties": {
+          "salonTimeSlotSequenceNumber": {
+            "type": "integer"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "endTime": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SetupResponse": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string"
+              },
+              "validUntilTimestamp": {
+                "type": "integer"
+              }
+            }
+          },
+          "company": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "seats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Chair"
+            }
+          },
+          "seatTypes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "currencies": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "haircutBookingCompletionRules": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "haircutPriceTypes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "haircutPrices": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "haircutStageRoleTypes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "haircutStages": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "haircuts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            }
+          },
+          "pageCards": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "staffRoles": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "staff": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Staff"
+            }
+          },
+          "salons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Salon"
+            }
+          },
+          "temporalDurations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "salonOpenHours": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalonOpenHour"
+            }
+          },
+          "openHourTypes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Location"
+            }
+          },
+          "geoCities": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "geoCountries": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "staffRegistrations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request - Invalid input parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "Nova API",
+    "version": "2.0.0",
+    "description": "Nova Backend API - A booking management system for workplace/salon bookings with support for services, staff, and appointments"
+  },
+  "openapi": "3.0.4",
+  "paths": {
+    "/v2/booking/pre": {
+      "post": {
+        "summary": "Create a pre-booking",
+        "description": "Creates a tentative booking reservation that must be confirmed later",
+        "tags": ["Booking"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingPreRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pre-booking created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingPre"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/booking/pre/{companyId}": {
+      "get": {
+        "summary": "Get pre-bookings by company",
+        "description": "Retrieves all pre-bookings for a specific company",
+        "tags": ["Booking"],
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The company ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of pre-bookings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BookingPre"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/booking": {
+      "post": {
+        "summary": "Create a booking from pre-booking",
+        "description": "Converts a pre-booking into a confirmed booking with order and appointment",
+        "tags": ["Booking"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Booking created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/chair": {
+      "post": {
+        "summary": "Create a chair/seat",
+        "description": "Creates a new chair (seat) and associates it with a salon and services",
+        "tags": ["Chair"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChairRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Chair created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Chair"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/chair/{seatId}": {
+      "patch": {
+        "summary": "Update a chair",
+        "description": "Updates an existing chair's properties and service associations",
+        "tags": ["Chair"],
+        "parameters": [
+          {
+            "name": "seatId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The seat/chair ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChairUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chair updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Chair"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/location": {
+      "post": {
+        "summary": "Create a location",
+        "description": "Creates a new physical location with address details",
+        "tags": ["Location"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Location created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/location/{locationId}": {
+      "patch": {
+        "summary": "Update a location",
+        "description": "Updates an existing location's address details",
+        "tags": ["Location"],
+        "parameters": [
+          {
+            "name": "locationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The location ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Location updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Location"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Authenticates a user and creates a session",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/registration": {
+      "post": {
+        "summary": "Create a registration",
+        "description": "Creates a new user registration for staff or company members",
+        "tags": ["Registration"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registration created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Registration"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/registration/{registrationId}/message": {
+      "post": {
+        "summary": "Send registration verification message",
+        "description": "Sends a verification email message for a registration",
+        "tags": ["Registration"],
+        "parameters": [
+          {
+            "name": "registrationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The registration ID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Registration message sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/registration/{registrationId}/verify/{accessCode}": {
+      "get": {
+        "summary": "Verify registration",
+        "description": "Verifies a registration using the access code and creates the user account",
+        "tags": ["Registration"],
+        "parameters": [
+          {
+            "name": "registrationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The registration ID"
+          },
+          {
+            "name": "accessCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The verification access code"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Registration verified and user created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationVerifiedUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/salon": {
+      "post": {
+        "summary": "Create a salon",
+        "description": "Creates a new salon/workplace location",
+        "tags": ["Salon"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalonRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Salon created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Salon"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/salon/{salonId}": {
+      "patch": {
+        "summary": "Update a salon",
+        "description": "Updates an existing salon's properties",
+        "tags": ["Salon"],
+        "parameters": [
+          {
+            "name": "salonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The salon ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalonUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Salon updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Salon"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/salon/{salonId}/product/{serviceId}": {
+      "get": {
+        "summary": "Get salon service staff",
+        "description": "Retrieves staff members qualified to perform a specific service at a salon",
+        "tags": ["Salon"],
+        "parameters": [
+          {
+            "name": "salonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The salon ID"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The service/product ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of qualified staff",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Staff"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/salon/{salonId}/product/{serviceId}/staff/{staffId}": {
+      "get": {
+        "summary": "Get staff availability for service",
+        "description": "Retrieves available time slots for a specific staff member to perform a service",
+        "tags": ["Salon"],
+        "parameters": [
+          {
+            "name": "salonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The salon ID"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The service/product ID"
+          },
+          {
+            "name": "staffId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The staff member ID"
+          },
+          {
+            "name": "startDateYear",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Year of the date to check availability"
+          },
+          {
+            "name": "startDateMonth",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "description": "Month of the date to check availability"
+          },
+          {
+            "name": "startDateMonthDay",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 31
+            },
+            "description": "Day of the month to check availability"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of available time slots",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TimeSlotAvailability"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/salon-open-hour": {
+      "post": {
+        "summary": "Create salon opening hours",
+        "description": "Creates opening hours for a salon",
+        "tags": ["Salon Opening Hours"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalonOpenHourRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Salon open hour created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalonOpenHour"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/salon-open-hour/{salonOpenHourId}": {
+      "patch": {
+        "summary": "Update salon opening hours",
+        "description": "Updates existing opening hours for a salon",
+        "tags": ["Salon Opening Hours"],
+        "parameters": [
+          {
+            "name": "salonOpenHourId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The salon open hour ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalonOpenHourUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Salon open hour updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalonOpenHour"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/haircut": {
+      "post": {
+        "summary": "Create a haircut/service",
+        "description": "Creates a new service (haircut) offered by a company",
+        "tags": ["Service"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Service created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Service"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/setup/{userId}": {
+      "get": {
+        "summary": "Get user setup data",
+        "description": "Retrieves comprehensive setup data for a user including company info, salons, staff, services, etc.",
+        "tags": ["Setup"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The user ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Setup data retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetupResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/staff/{staffId}": {
+      "patch": {
+        "summary": "Update staff member",
+        "description": "Updates a staff member's details",
+        "tags": ["Staff"],
+        "parameters": [
+          {
+            "name": "staffId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The staff ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaffUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Staff updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Staff"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Booking",
+      "description": "Booking and pre-booking management"
+    },
+    {
+      "name": "Chair",
+      "description": "Chair/seat management for salons"
+    },
+    {
+      "name": "Location",
+      "description": "Physical location management"
+    },
+    {
+      "name": "Authentication",
+      "description": "User authentication and sessions"
+    },
+    {
+      "name": "Registration",
+      "description": "User and staff registration"
+    },
+    {
+      "name": "Salon",
+      "description": "Salon/workplace management"
+    },
+    {
+      "name": "Salon Opening Hours",
+      "description": "Salon operating hours management"
+    },
+    {
+      "name": "Service",
+      "description": "Service/haircut offerings"
+    },
+    {
+      "name": "Setup",
+      "description": "Initial setup and configuration data"
+    },
+    {
+      "name": "Staff",
+      "description": "Staff member management"
+    }
+  ]
+}

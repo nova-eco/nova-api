@@ -1,0 +1,159 @@
+import { routerOptions } from '@app/config';
+import {
+  ActionModel,
+  ActionRegistrationMessageEmailModel,
+  CompanyRegistrationSettingModel,
+  RegistrationMessageModel,
+  RegistrationModel,
+  RegistrationVerifiedModel,
+} from '@app/models';
+import { Router } from 'express';
+
+export const registrationRouterPostRegistrationMessage = Router(routerOptions).post(
+  '/',
+  async (req, res, next) => {
+    try {
+      const registrationModel = new RegistrationModel();
+      const registrationMessageModel = new RegistrationMessageModel();
+      const actionModel = new ActionModel();
+      const actionRegistrationMessageEmailModel =
+        new ActionRegistrationMessageEmailModel();
+      const registrationVerifiedModel = new RegistrationVerifiedModel();
+
+      const registrationId =
+        typeof req.params['registrationId'] !== 'undefined'
+          ? req.params['registrationId']
+          : null;
+
+      if (registrationId === null) {
+        throw new Error('registrationId: invalid');
+      }
+
+      const registration = await registrationModel.findByPk(registrationId);
+      let lastSequenceNumber;
+
+      if (registration === null) {
+        throw new Error('Registration does not exist');
+      }
+
+      if (registration.isEnabled === false) {
+        throw new Error('Registration has been deleted, already.');
+      }
+
+      if (registration.isValid() === false) {
+        throw new Error('Registration is invalid');
+      }
+
+      const registrationVerified = await registrationVerifiedModel.count({
+        registrationId,
+      });
+
+      if (registrationVerified > 0) {
+        throw new Error('Registration has an existing verification.');
+      }
+
+      const numMessagesPerRegistration = await registrationMessageModel.count({
+        registrationId,
+      });
+
+      console.log({ numMessagesPerRegistration });
+
+      if (numMessagesPerRegistration > 0) {
+        const numEnabledMessagesPerRegistration = await registrationMessageModel.count({
+          registrationId,
+          isEnabled: true,
+        });
+
+        if (numEnabledMessagesPerRegistration > 0) {
+          await registrationMessageModel.disableAllForRegistration(registrationId);
+        }
+
+        const numDisabledMessages = await registrationMessageModel.count({
+          isEnabled: false,
+          registrationId,
+        });
+
+        if (numDisabledMessages === 0) {
+          throw new Error(
+            'registrationRouterPostRegistrationMessage: existing messages not set to disabled.',
+          );
+        }
+
+        lastSequenceNumber =
+          await registrationMessageModel.getMaxSequenceNumber(registrationId);
+      }
+
+      const nextSequenceNumber =
+        typeof lastSequenceNumber !== 'undefined' ? lastSequenceNumber + 1 : 0;
+
+      const accessCode = (Math.random() + 1).toString(36).substring(7);
+      const currentTimestamp = Date.now();
+      const validUntilTimestamp = currentTimestamp + 1000 * 60 * 60;
+      const validUntilDate = new Date(validUntilTimestamp);
+
+      const registrationMessage = await registrationMessageModel.create({
+        registrationId,
+        accessCode,
+        isEnabled: true,
+        sequenceNumber: nextSequenceNumber,
+        validUntil: validUntilDate,
+      });
+
+      if (registrationMessage === null) {
+        throw new Error(
+          'registrationRouterPostRegistrationMessage: registrationMessage not created.',
+        );
+      }
+
+      const performAtTimestamp = currentTimestamp + 1000 * 10;
+
+      const action = await actionModel.create({
+        performAtTimestamp,
+      });
+
+      if (action === null) {
+        throw new Error('registrationRouterPostRegistrationMessage: action not created.');
+      }
+
+      const template =
+        await CompanyRegistrationSettingModel.getRegistrationMessageTemplate();
+
+      if (template === null) {
+        throw new Error('registrationRouterPostRegistrationMessage: template not found.');
+      }
+
+      const templateId = typeof template['id'] !== 'undefined' ? template['id'] : null;
+
+      if (templateId === null) {
+        throw new Error(
+          'registrationRouterPostRegistrationMessage: templateId not found.',
+        );
+      }
+
+      const actionRegistrationMessageEmail =
+        await actionRegistrationMessageEmailModel.create({
+          actionId: action.id,
+          registrationMessageId: registrationMessage.id,
+          templateId,
+        });
+
+      if (actionRegistrationMessageEmail === null) {
+        throw new Error(
+          'registrationRouterPostRegistrationMessage: actionRegistrationMessageEmail not created.',
+        );
+      }
+
+      const response = {
+        id: registrationMessage.id,
+        registrationId: registrationMessage.registrationId,
+        isEnabled: registrationMessage.isEnabled,
+        sequenceNumber: registrationMessage.sequenceNumber,
+        validUntil: registrationMessage.validUntil,
+      };
+
+      res.status(201).json(response);
+    } catch (error) {
+      next(error);
+    }
+  },
+);

@@ -1,0 +1,299 @@
+import { routerOptions } from '@app/config';
+import {
+  AccountModel,
+  CompanyStaffRoleModel,
+  RegistrationModel,
+  RegistrationCompanyModel,
+  RegistrationCompanyStaffModel,
+  RegistrationMessageModel,
+  RegistrationRegistrantModel,
+  RegistrationVerifiedModel,
+  RegistrationVerifiedUserModel,
+  StaffModel,
+  UserModel,
+  UserEmailModel,
+  UserStatusModel,
+  UserWalletModel,
+  WalletModel,
+} from '@app/models';
+import { Router } from 'express';
+
+export const registrationRouterGetRegistrationVerified = Router(routerOptions).get(
+  '/',
+  async (req, res, next) => {
+    try {
+      const {
+        Account,
+        CompanyStaffRole,
+        Registration,
+        RegistrationCompany,
+        RegistrationCompanyStaff,
+        RegistrationMessage,
+        RegistrationRegistrant,
+        RegistrationVerified,
+        RegistrationVerifiedUser,
+        Staff,
+        User,
+        UserEmail,
+        UserStatus,
+        UserWallet,
+        Wallet,
+      } = Db.getDb().models;
+
+      const registrationId =
+        typeof req.params['registrationId'] !== 'undefined'
+          ? req.params['registrationId']
+          : null;
+
+      if (registrationId === null) {
+        throw new Error('registrationId: invalid');
+      }
+
+      const accessCode =
+        typeof req.params['accessCode'] !== 'undefined' ? req.params['accessCode'] : null;
+
+      if (accessCode === null) {
+        throw new Error('accessCode: invalid');
+      }
+
+      const registration = await Registration.findByPk(registrationId);
+
+      if (registration === null) {
+        throw new Error('Registration was not found');
+      }
+
+      if (registration.isEnabled === false) {
+        throw new Error('Registration has been disabled');
+      }
+
+      if (registration.isValid() === false) {
+        throw new Error('Registration is invalid');
+      }
+
+      const existingRegistrationVerified = await RegistrationVerified.count({
+        where: {
+          registrationId,
+        },
+      });
+
+      if (existingRegistrationVerified > 0) {
+        throw new Error('Registration has been verified');
+      }
+
+      const lastSequenceNumber = await RegistrationMessage.max('sequenceNumber', {
+        where: {
+          isEnabled: true,
+          registrationId,
+        },
+      });
+
+      if (lastSequenceNumber === null) {
+        throw new Error('Registration has no enabled messages');
+      }
+
+      const registrationMessage = await RegistrationMessage.findOne({
+        where: {
+          registrationId,
+          isEnabled: true,
+          sequenceNumber: lastSequenceNumber,
+        },
+      });
+
+      if (registrationMessage === null) {
+        throw new Error('RegistrationMessage has not been found');
+      }
+
+      if (registrationMessage.isValid() === false) {
+        throw new Error('RegistrationMessage is invalid');
+      }
+
+      if (registrationMessage.accessCode !== accessCode) {
+        throw new Error('An invalid accessCode was submitted.');
+      }
+
+      const registrationVerified = await RegistrationVerified.create({
+        registrationId: registration.id,
+        registrationMessageId: registrationMessage.id,
+      });
+
+      if (registrationVerified === null) {
+        throw new Error('RegistrationVerified was not created');
+      }
+
+      registration.isEnabled = false;
+      await registration.save();
+
+      registrationMessage.isEnabled = false;
+      await registrationMessage.save();
+
+      const registrationRegistrant = await RegistrationRegistrant.findOne({
+        where: {
+          registrationId,
+        },
+      });
+
+      if (registrationRegistrant === null) {
+        throw new Error('RegistrationRegistrant not found');
+      }
+
+      const email =
+        typeof registrationRegistrant.email !== 'undefined'
+          ? registrationRegistrant.email
+          : null;
+
+      if (email === null) {
+        throw new Error('email not found');
+      }
+
+      const forename =
+        typeof registrationRegistrant.forename !== 'undefined'
+          ? registrationRegistrant.forename
+          : null;
+
+      if (forename === null) {
+        throw new Error('forename not found');
+      }
+
+      const surname =
+        typeof registrationRegistrant.surname !== 'undefined'
+          ? registrationRegistrant.surname
+          : null;
+
+      if (surname === null) {
+        throw new Error('surname not found');
+      }
+
+      const username =
+        typeof registrationRegistrant.username !== 'undefined'
+          ? registrationRegistrant.username
+          : null;
+
+      if (username === null) {
+        throw new Error('username not found');
+      }
+
+      const potentiallyDuplicateUsername = await User.count({
+        where: {
+          username,
+        },
+      });
+
+      if (potentiallyDuplicateUsername > 0) {
+        throw new Error('username exists');
+      }
+
+      const userStatusActiveId = await UserStatus.getActiveId();
+
+      const user = await User.create({
+        userStatusId: userStatusActiveId,
+        email,
+        forename,
+        surname,
+        username,
+      });
+
+      console.log({ user });
+
+      if (user === null) {
+        throw new Error('user not created');
+      }
+
+      const registrationVerifiedUser = await RegistrationVerifiedUser.create({
+        userId: user.id,
+        registrationVerifiedId: registrationVerified.id,
+      });
+
+      if (registrationVerifiedUser === null) {
+        throw new Error('registrationVerifiedUser not created');
+      }
+
+      const potentiallyDuplicateEmail = await UserEmail.count({
+        where: {
+          email,
+        },
+      });
+
+      if (potentiallyDuplicateEmail > 0) {
+        throw new Error('email exists');
+      }
+
+      const userEmail = await UserEmail.create({
+        userId: user.id,
+        email,
+      });
+
+      if (userEmail === null) {
+        throw new Error('userEmail not created');
+      }
+
+      const registrationCompany = await RegistrationCompany.findOne({
+        where: {
+          registrationId: registration.id,
+        },
+      });
+
+      if (registrationCompany !== null) {
+        const wallet = await Wallet.create({});
+
+        if (wallet === null) {
+          throw new Error('wallet not created');
+        }
+
+        const userWallet = await UserWallet.create({
+          userId: user.id,
+          walletId: wallet.id,
+          balance: 1000,
+        });
+
+        if (userWallet === null) {
+          throw new Error('userWallet not created');
+        }
+
+        const account = await Account.create({
+          companyId: registrationCompany.companyId,
+          userId: user.id,
+        });
+
+        if (account === null) {
+          throw new Error('account not created');
+        }
+
+        const registrationCompanyStaff = await RegistrationCompanyStaff.findOne({
+          where: {
+            registrationCompanyId: registrationCompany.id,
+          },
+        });
+
+        if (registrationCompanyStaff !== null) {
+          const companyStaffRoleId =
+            typeof registrationCompanyStaff.companyStaffRoleId !== 'undefined'
+              ? registrationCompanyStaff.companyStaffRoleId
+              : null;
+
+          if (companyStaffRoleId === null) {
+            throw new Error('companyStaffRoleId not found');
+          }
+
+          const companyStaffRole = await CompanyStaffRole.findByPk(companyStaffRoleId);
+
+          if (companyStaffRole === null) {
+            throw new Error('companyStaffRole not found');
+          }
+
+          const staff = await Staff.create({
+            accountId: account.id,
+            companyStaffRoleId: companyStaffRole.id,
+          });
+
+          if (staff === null) {
+            throw new Error('staff not found');
+          }
+        }
+      }
+
+      res.status(201).json(registrationVerifiedUser);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
