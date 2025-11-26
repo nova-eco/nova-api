@@ -1,9 +1,8 @@
 #####################################################################
 #                                                                   #
-# Script:  compose.yaml                                             #
+# Script:  compose.override.yaml                                    #
 #                                                                   #
-# Purpose: Docker compose definition for nova-api                   #
-#          with overrides defined in compose.override.yaml          #
+# Purpose: Docker compose overrides for nova-api                    #
 #                                                                   #
 # Date:    20th November 2025                                       #
 #                                                                   #
@@ -13,18 +12,10 @@
 
 services:
   nova-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: '${NOVA_API__CONTAINER_NAME}'
-    env_file:
-      - path: ./.env
-        required: true
-    ports:
-      - '${NOVA_API__PORT}:${NOVA_API__PORT}'
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:${NOVA_API__PORT}/healthcheck']
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+    networks:
+      - '${NOVA_API__NETWORK}'
+networks:
+  nova-fe-network:
+    driver: bridge
+    internal: false
+    name: '${NOVA_API__NETWORK}'
