@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file. Dates are d
 - feat: remove the no longer required DOCKER.md file [`9b2246d`](https://nova-eco/nova-eco/nova-api.git/commit/9b2246dce45485930b04ddc1f8bb780bf316c7c5)
 - feat: updated unit tests and CHANGELOG [`b8f0ac5`](https://nova-eco/nova-eco/nova-api.git/commit/b8f0ac50bfff6b4726f880913fb270a094114f9d)
 - feat: improved unit test formatting and removal of .husky from Prettier [`2d0d166`](https://nova-eco/nova-eco/nova-api.git/commit/2d0d166d52aa79e51b0eee407ab3a5bdae3a93ae)
+- feat: add debugging statements into modles Database [`4b0931c`](https://nova-eco/nova-eco/nova-api.git/commit/4b0931c842f25d10f999be085aa3b105505fc9ae)
 - feat: update code quality workflow [`1b34a2e`](https://nova-eco/nova-eco/nova-api.git/commit/1b34a2ebb2b3bccf1b8a9892af2c90fb1353d705)
 - feat: attempt to clear build and remove no longer required sql lint config [`e42a068`](https://nova-eco/nova-eco/nova-api.git/commit/e42a068635e3a85ce426e24e993c7ebb433cb4f5)
 - feat: add CHANGELOG and cspell updates [`59eea2e`](https://nova-eco/nova-eco/nova-api.git/commit/59eea2e85b0042e86704269c01629234f69ef157)
