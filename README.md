@@ -83,14 +83,9 @@ feature requests.
 
 ### Configuration
 
-The API uses environment variables for configuration. Key variables include:
-
-- Database connection settings
-- API port configuration
-- Authentication configuration
-- Email/notification settings
-
-Refer to `.env.TEMPLATE` for a complete list of required environment variables.
+The API uses environment variables for configuration. See the
+[Environment Variables](#environment-variables) section for a complete list of required
+variables.
 
 ### Usage
 
@@ -141,11 +136,10 @@ The project includes a multi-stage Dockerfile that:
 
 ```bash
 docker build \
-  --build-arg NOVA_API__AUTHOR="Nova Admin <admin@nova.eco>" \
-  --build-arg NOVA_API__NAME="nova-api" \
-  --build-arg NOVA_API__PORT="3000" \
-  --build-arg API_NAME="nova-api" \
-  --build-arg API_PORT="3000" \
+  --build-arg NOVA_API_AUTHOR="Nova Admin <admin@nova.eco>" \
+  --build-arg NOVA_API_NAME="nova-api" \
+  --build-arg NOVA_API_PORT="3001" \
+  --build-arg NOVA_API_SERVICE_NAME="nova-be-api" \
   -t nova-api:latest .
 ```
 
@@ -182,11 +176,10 @@ docker compose down
 
 The `compose.yaml` file automatically passes build arguments from your `.env` file:
 
-- `NOVA_API__AUTHOR` - Author metadata for the image
-- `NOVA_API__NAME` - Application name
-- `NOVA_API__PORT` - External port mapping
-- `API_NAME` - Internal application name
-- `API_PORT` - Internal application port (default: 3000)
+- `NOVA_API_AUTHOR` - Author metadata for the image
+- `NOVA_API_NAME` - Application name
+- `NOVA_API_PORT` - API service port
+- `NOVA_API_SERVICE_NAME` - Internal application name
 
 The container includes:
 
@@ -194,6 +187,51 @@ The container includes:
 - Port mapping from `.env` configuration
 - Network configuration via `compose.override.yaml`
 - Volume mounting for development (if configured)
+
+## Environment Variables
+
+The nova-api requires several environment variables for configuration. All API-related
+variables are prefixed with `NOVA_API_`.
+
+### Core API Variables
+
+| Variable                  | Description                         | Default | Used In                                           |
+| ------------------------- | ----------------------------------- | ------- | ------------------------------------------------- |
+| `NOVA_API_AUTHOR`         | Author information for the package  | `""`    | Dockerfile (LABEL authors)                        |
+| `NOVA_API_CONTAINER_NAME` | Name of the API container           | `""`    | Container identification                          |
+| `NOVA_API_NAME`           | Logical name of the API application | `""`    | Dockerfile (LABEL name)                           |
+| `NOVA_API_PORT`           | API service port                    | `""`    | Dockerfile, src/config/apiPort.ts, server startup |
+
+### User Management Variables
+
+| Variable                  | Description                      | Default | Used In                      |
+| ------------------------- | -------------------------------- | ------- | ---------------------------- |
+| `NOVA_API_USER_ROOT`      | Root user for API operations     | `""`    | Internal API administration  |
+| `NOVA_API_USER_ROOT_PASS` | Root password for API operations | `""`    | Internal API administration  |
+| `NOVA_API_USER_STD`       | Standard user for API operations | `""`    | Internal API user management |
+| `NOVA_API_USER_STD_PASS`  | Standard user password           | `""`    | Internal API user management |
+
+### Application Configuration Variables
+
+| Variable                         | Description                      | Default | Used In                                          |
+| -------------------------------- | -------------------------------- | ------- | ------------------------------------------------ |
+| `NOVA_API_SERVICE_NAME`          | Service name for the API backend | `""`    | Dockerfile, src/config/apiName.ts, logging       |
+| `NOVA_API_DB_HOST`               | Database host for connections    | `""`    | src/models/Database.ts (connection pooling)      |
+| `NOVA_API_DB_USER`               | Database username                | `""`    | src/models/Database.ts (authentication)          |
+| `NOVA_API_DB_PASSWORD`           | Database password                | `""`    | src/models/Database.ts (authentication)          |
+| `NOVA_API_DB_NAME`               | Database name                    | `""`    | src/models/Database.ts (database selection)      |
+| `NOVA_API_EMAIL_SERVICE_ENABLED` | Enable/disable email service     | `""`    | src/config/emailServiceEnabled.ts (feature flag) |
+| `NOVA_API_OPENAPI_DIR_NAME`      | OpenAPI specification directory  | `""`    | src/config/openApiDirName.ts (API docs serving)  |
+| `NOVA_API_OPENAPI_FILE_NAME`     | OpenAPI specification filename   | `""`    | src/config/openApiFileName.ts (API docs)         |
+
+### Variable Dependencies
+
+Several variables must match corresponding values in the nova-db configuration:
+
+- `NOVA_API_DB_HOST` should match the database container name
+- `NOVA_API_DB_USER` should match `NOVA_DB_USER_STD`
+- `NOVA_API_DB_PASSWORD` should match `NOVA_DB_USER_STD_PASS`
+- `NOVA_API_DB_NAME` should match `NOVA_DB_NAME`
 
 ## Architecture
 
@@ -290,11 +328,10 @@ when changes are pushed to `master`.
 
 **Build arguments** (from repository variables):
 
-- `NOVA_API__AUTHOR` - Author metadata
-- `NOVA_API__NAME` - Application name
-- `NOVA_API__PORT` - Port configuration
-- `API_NAME` - Internal application name
-- `API_PORT` - Internal port (default: 3000)
+- `NOVA_API_AUTHOR` - Author metadata
+- `NOVA_API_NAME` - Application name
+- `NOVA_API_PORT` - Port configuration
+- `NOVA_API_SERVICE_NAME` - Internal application name
 
 **Image features:**
 
@@ -357,13 +394,12 @@ Configure these secrets in your GitHub repository settings (`Settings` →
 Configure these variables in `Settings` → `Secrets and variables` → `Actions` →
 `Variables`:
 
-| Variable           | Description                      | Example                       |
-| ------------------ | -------------------------------- | ----------------------------- |
-| `NOVA_API__AUTHOR` | Author metadata for Docker image | `Nova Admin <admin@nova.eco>` |
-| `NOVA_API__NAME`   | Application name                 | `nova-api`                    |
-| `NOVA_API__PORT`   | External port mapping            | `3000`                        |
-| `API_NAME`         | Internal application name        | `nova-api`                    |
-| `API_PORT`         | Internal application port        | `3000`                        |
+| Variable                | Description                      | Example                       |
+| ----------------------- | -------------------------------- | ----------------------------- |
+| `NOVA_API_AUTHOR`       | Author metadata for Docker image | `Nova Admin <admin@nova.eco>` |
+| `NOVA_API_NAME`         | Application name                 | `nova-api`                    |
+| `NOVA_API_PORT`         | API service port                 | `3001`                        |
+| `NOVA_API_SERVICE_NAME` | Internal application name        | `nova-be-api`                 |
 
 These variables are automatically passed as build arguments when building the Docker
 image.

@@ -10,16 +10,16 @@ export class Database {
     try {
       if (!this.pool) {
         /* eslint no-console: ["error", { allow: ["log"] }] */
-        console.log({ DB_HOST: process.env.DB_HOST });
-        console.log({ DB_USER: process.env.DB_USER });
-        console.log({ DB_NAME: process.env.DB_NAME });
-        console.log({ DB_PASSWORD: process.env.DB_PASSWORD });
+        console.log({ NOVA_API_DB_HOST: process.env.NOVA_API_DB_HOST });
+        console.log({ NOVA_API_DB_USER: process.env.NOVA_API_DB_USER });
+        console.log({ NOVA_API_DB_NAME: process.env.NOVA_API_DB_NAME });
+        console.log({ NOVA_API_DB_PASSWORD: process.env.NOVA_API_DB_PASSWORD });
 
         this.pool = mariadb.createPool({
-          host: process.env.DB_HOST || 'localhost',
-          user: process.env.DB_USER || 'nova_api',
-          password: process.env.DB_PASSWORD || 'nova_api_pass',
-          database: process.env.DB_NAME || 'nova',
+          host: process.env.NOVA_API_DB_HOST || 'localhost',
+          user: process.env.NOVA_API_DB_USER || 'nova_api',
+          password: process.env.NOVA_API_DB_PASSWORD || 'nova_api_pass',
+          database: process.env.NOVA_API_DB_NAME || 'nova',
           connectionLimit: 10,
           acquireTimeout: 30000,
         });

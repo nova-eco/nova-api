@@ -20,9 +20,9 @@
 FROM node:20-alpine AS builder
 
 # Build arguments from .env
-ARG NOVA_API__AUTHOR
-ARG NOVA_API__NAME
-ARG NOVA_API__PORT
+ARG NOVA_API_AUTHOR
+ARG NOVA_API_NAME
+ARG NOVA_API_PORT
 
 WORKDIR /app
 
@@ -47,17 +47,17 @@ RUN npm run build
 FROM node:20-alpine
 
 # Build arguments from .env
-ARG NOVA_API__AUTHOR
-ARG API_NAME
-ARG API_PORT
+ARG NOVA_API_AUTHOR
+ARG NOVA_API_SERVICE_NAME
+ARG NOVA_API_PORT
 
 # Environment variables for runtime
-ENV API_NAME=${API_NAME}
-ENV API_PORT=${API_PORT:-3000}
+ENV NOVA_API_SERVICE_NAME=${NOVA_API_SERVICE_NAME}
+ENV NOVA_API_PORT=${NOVA_API_PORT:-3000}
 
 # Labels
-LABEL authors=${NOVA_API__AUTHOR}
-LABEL name=${NOVA_API__NAME}
+LABEL authors=${NOVA_API_AUTHOR}
+LABEL name=${NOVA_API_NAME}
 
 WORKDIR /app
 
@@ -82,11 +82,11 @@ RUN chown -R nodejs:nodejs /app
 USER nodejs
 
 # Expose port from environment variable
-EXPOSE ${API_PORT}
+EXPOSE ${NOVA_API_PORT}
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:${API_PORT}/healthcheck', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+  CMD node -e "require('http').get('http://localhost:${NOVA_API_PORT}/healthcheck', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 # Start the application
 CMD ["node", "dist/index.js"]
