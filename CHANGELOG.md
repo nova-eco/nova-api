@@ -10,3 +10,4 @@ All notable changes to this project will be documented in this file. Dates are d
 - feat: remove the no longer required DOCKER.md file [`9b2246d`](https://nova-eco/nova-eco/nova-api.git/commit/9b2246dce45485930b04ddc1f8bb780bf316c7c5)
 - feat: add CHANGELOG and cspell updates [`59eea2e`](https://nova-eco/nova-eco/nova-api.git/commit/59eea2e85b0042e86704269c01629234f69ef157)
 - feat: update formatting [`bde864e`](https://nova-eco/nova-eco/nova-api.git/commit/bde864ee427f196d1a80fba6c46b7e9081acf4f0)
+- feat: updated CHANGELOG [`775ba13`](https://nova-eco/nova-eco/nova-api.git/commit/775ba13d88dda624de188a33ed4655c90149f82a)
