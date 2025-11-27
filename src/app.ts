@@ -49,8 +49,9 @@ app
 // .use('/v2/setup', setupRouter)
 // .use('/v2/staff', staffRouter);
 
-app.use((err, _req, res) => {
-  const { message } = err;
+/* eslint-disable  @typescript-eslint/no-unused-vars */
+app.use((err, _req, res, _next) => {
+  const { message } = err as Error;
   const payload = {
     message,
   };

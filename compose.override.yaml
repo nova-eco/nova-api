@@ -15,7 +15,7 @@ services:
     networks:
       - '${NOVA_API__NETWORK}'
 networks:
-  nova-fe-network:
+  nova-network:
     driver: bridge
     internal: false
     name: '${NOVA_API__NETWORK}'

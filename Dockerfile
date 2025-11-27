@@ -48,8 +48,6 @@ FROM node:20-alpine
 
 # Build arguments from .env
 ARG NOVA_API__AUTHOR
-ARG NOVA_API__NAME
-ARG NOVA_API__PORT
 ARG API_NAME
 ARG API_PORT
 

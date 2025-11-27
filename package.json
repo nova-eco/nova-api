@@ -33,6 +33,11 @@
     "clean:dist": "bash -c 'rm -fr ./dist'",
     "commit-msg": "commitlint --edit",
     "dev": "ENV_VAR='dev' tsx watch ./src/index.ts",
+    "docker": "npm run docker:only",
+    "docker:has": "bash -c 'command -v docker'",
+    "docker:only": "npm run docker:start",
+    "docker:start": "docker compose up --build --force-recreate",
+    "docker:stop": "docker compose down --remove-orphans --rmi all",
     "format": "npm run format:check",
     "format:base": "npx prettier .",
     "format:check": "npm run format:base -- --check",
@@ -49,7 +54,9 @@
     "test:default": "npm run test:unit",
     "test:unit": "TEST_TYPE='unit' npm run test:base",
     "test:integration": "TEST_TYPE='integration' npm run test:base",
-    "test:it": "npm run test:integration"
+    "test:it": "npm run test:integration",
+    "start": "npm run check && npm run docker",
+    "stop": "npm run docker:stop"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",

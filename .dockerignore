@@ -27,11 +27,10 @@
 CHANGELOG.md
 cspell.json
 LICENSE.txt
-package.json
 README.md
 
 #
 # Standard dirs to be ignored
 #
+dist
 node_modules/
-scripts/

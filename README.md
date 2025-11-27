@@ -158,10 +158,22 @@ build arguments from your `.env` file.
 **Start the service:**
 
 ```bash
+npm run start
+```
+
+Or use Docker Compose directly:
+
+```bash
 docker compose up --build
 ```
 
 **Stop the service:**
+
+```bash
+npm run stop
+```
+
+Or use Docker Compose directly:
 
 ```bash
 docker compose down
@@ -659,8 +671,12 @@ The API uses OpenAPI specification for validation and documentation.
 
 | Script                     | Description                                         |
 | -------------------------- | --------------------------------------------------- |
+| `npm start`                | Run all checks and start Docker containers          |
+| `npm stop`                 | Stop Docker containers and clean up                 |
 | `npm run dev`              | Start development server with hot-reload            |
 | `npm run build`            | Build TypeScript to JavaScript                      |
+| `npm run docker`           | Start Docker Compose services                       |
+| `npm run docker:stop`      | Stop Docker Compose services                        |
 | `npm run test`             | Run default test suite (unit tests)                 |
 | `npm run test:unit`        | Run unit tests                                      |
 | `npm run test:integration` | Run integration tests                               |

@@ -128,7 +128,8 @@ export const loginRouterPostLogin = Router(routerOptions).post(
         /*
          * 11. Known password
          */
-        const knownPassword = await passwordModel.getLatestPassword(userId);
+        //const knownPassword = await passwordModel.getLatestPassword(userId);
+        const knownPassword = await passwordModel.getLatestPassword();
 
         if (knownPassword === null) {
           throw new Error('loginRouterPostLogin: knownPassword not found');

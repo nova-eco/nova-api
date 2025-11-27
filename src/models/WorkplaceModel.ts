@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { sqlLoader } from '@app/util/sqlLoader';
 import { BaseModel, BaseModelAttributes } from './BaseModel';
 
