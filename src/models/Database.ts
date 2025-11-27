@@ -7,15 +7,26 @@ export class Database {
    * Initialize the database connection pool
    */
   static async init(): Promise<mariadb.Pool> {
-    if (!this.pool) {
-      this.pool = mariadb.createPool({
-        host: process.env.DB_HOST || 'localhost',
-        user: process.env.DB_USER || 'nova_api',
-        password: process.env.DB_PASSWORD || 'nova_api_pass',
-        database: process.env.DB_NAME || 'nova',
-        connectionLimit: 10,
-        acquireTimeout: 30000,
-      });
+    try {
+      if (!this.pool) {
+        /* eslint no-console: ["error", { allow: ["log"] }] */
+        console.log({ DB_HOST: process.env.DB_HOST });
+        console.log({ DB_USER: process.env.DB_USER });
+        console.log({ DB_NAME: process.env.DB_NAME });
+        console.log({ DB_PASSWORD: process.env.DB_PASSWORD });
+
+        this.pool = mariadb.createPool({
+          host: process.env.DB_HOST || 'localhost',
+          user: process.env.DB_USER || 'nova_api',
+          password: process.env.DB_PASSWORD || 'nova_api_pass',
+          database: process.env.DB_NAME || 'nova',
+          connectionLimit: 10,
+          acquireTimeout: 30000,
+        });
+      }
+    } catch (err) {
+      console.log('Database initialization error:', err);
+      this.pool.end();
     }
 
     return this.pool;
