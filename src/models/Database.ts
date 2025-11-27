@@ -11,7 +11,7 @@ export class Database {
       this.pool = mariadb.createPool({
         host: process.env.DB_HOST || 'localhost',
         user: process.env.DB_USER || 'nova_api',
-        password: process.env.DB_PASSWORD || 'Titania09',
+        password: process.env.DB_PASSWORD || 'nova_api_pass',
         database: process.env.DB_NAME || 'nova',
         connectionLimit: 10,
         acquireTimeout: 30000,

@@ -4,8 +4,7 @@
 [![Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
 [![CSpell](https://img.shields.io/badge/spell_check-cspell-blue.svg)](https://cspell.org/)
 
-REST API for the Nova booking and management system, built with Express, TypeScript, and
-Sequelize.
+REST API for the Nova booking and management system, built with Express and TypeScript.
 
 ## Project Status
 
