@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file. Dates are d
 - feat: update formatting [`bde864e`](https://nova-eco/nova-eco/nova-api.git/commit/bde864ee427f196d1a80fba6c46b7e9081acf4f0)
 - feat: update the README file and the currently hardcoded DB password [`3f01088`](https://nova-eco/nova-eco/nova-api.git/commit/3f010889cb879a5b676d4900ef24cbf9485664b2)
 - feat: update Dockerfile to remove a possibly erroneous npm ci flag [`1efe454`](https://nova-eco/nova-eco/nova-api.git/commit/1efe45457f78057f551818c378eb72db32544ee4)
+- feat: fix typo in the CHANGELOG [`2c1a5c0`](https://nova-eco/nova-eco/nova-api.git/commit/2c1a5c002b7c20ee522cb6465cd0000ee36d5289)
 - feat: update port used by the openapi spec [`4757d2e`](https://nova-eco/nova-eco/nova-api.git/commit/4757d2e98522a21e407ce5b0dcd656dafacb06cd)
 - feat: updated CHANGELOG [`dcb8cd2`](https://nova-eco/nova-eco/nova-api.git/commit/dcb8cd2501dfad82b793d46a8255e47926d98a46)
 - feat: updated CHANGELOG [`775ba13`](https://nova-eco/nova-eco/nova-api.git/commit/775ba13d88dda624de188a33ed4655c90149f82a)
