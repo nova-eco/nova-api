@@ -13,7 +13,12 @@ describe('UserModel - positive', () => {
       .mockResolvedValueOnce([{}])
       .mockResolvedValueOnce([created]);
 
-    const res = await userModel.create({ username: 'tester' } as unknown);
+    const res = await userModel.create({
+      username: 'tester',
+      userStatusId: '1',
+      forename: 'Test',
+      surname: 'User',
+    });
     expect(res).toEqual(created);
   });
 });

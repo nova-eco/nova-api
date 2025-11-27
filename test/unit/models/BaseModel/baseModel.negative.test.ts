@@ -52,8 +52,8 @@ describe('BaseModel - Negative Tests', () => {
         email: 'test@example.com',
       };
 
-      mockQueryFn.mockResolvedValueOnce([{ insertId: 1 }] as unknown);
-      mockQueryFn.mockResolvedValueOnce([] as unknown);
+      mockQueryFn.mockResolvedValueOnce([{ insertId: 1 }]);
+      mockQueryFn.mockResolvedValueOnce([]);
 
       await expect(testModel.create(newData)).rejects.toThrow(
         'Failed to create record in test_table',
@@ -80,7 +80,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return null for malformed IDs', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as unknown);
+      mockQueryFn.mockResolvedValueOnce([]);
 
       const result = await testModel.findByPk('');
 
@@ -121,7 +121,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return empty array when no records found', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as unknown);
+      mockQueryFn.mockResolvedValueOnce([]);
 
       const result = await testModel.findAll({ where: { name: 'NonExistent' } });
 
@@ -140,7 +140,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return empty array when no matches found', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as unknown);
+      mockQueryFn.mockResolvedValueOnce([]);
 
       const result = await testModel.findBy('email', 'nonexistent@example.com');
 
@@ -166,8 +166,8 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return null when record not found after update', async () => {
-      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as unknown);
-      mockQueryFn.mockResolvedValueOnce([] as unknown);
+      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }]);
+      mockQueryFn.mockResolvedValueOnce([]);
 
       const result = await testModel.update('uuid-123', { name: 'New Name' });
 
@@ -175,8 +175,8 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should handle update with non-existent ID', async () => {
-      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 0 }] as unknown);
-      mockQueryFn.mockResolvedValueOnce([] as unknown);
+      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 0 }]);
+      mockQueryFn.mockResolvedValueOnce([]);
 
       const result = await testModel.update('non-existent-id', { name: 'New Name' });
 
@@ -192,7 +192,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return 0 when count query returns empty result', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as unknown);
+      mockQueryFn.mockResolvedValueOnce([]);
 
       const result = await testModel.count();
 
@@ -200,7 +200,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return 0 when count query returns undefined total', async () => {
-      mockQueryFn.mockResolvedValueOnce([{ total: undefined }] as unknown);
+      mockQueryFn.mockResolvedValueOnce([{ total: undefined }]);
 
       const result = await testModel.count();
 
@@ -218,10 +218,10 @@ describe('BaseModel - Negative Tests', () => {
 
   describe('edge cases', () => {
     it('should handle SQL injection attempts in findOne', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as unknown);
+      mockQueryFn.mockResolvedValueOnce([]);
 
       await testModel.findOne({
-        email: "'; DROP TABLE users; --" as unknown,
+        email: "'; DROP TABLE users; --",
       });
 
       expect(mockQueryFn).toHaveBeenCalledWith(
@@ -239,7 +239,7 @@ describe('BaseModel - Negative Tests', () => {
         modified: new Date(),
       }));
 
-      mockQueryFn.mockResolvedValueOnce(largeArray as unknown);
+      mockQueryFn.mockResolvedValueOnce(largeArray);
 
       const result = await testModel.findAll();
 
@@ -255,11 +255,11 @@ describe('BaseModel - Negative Tests', () => {
         modified: new Date('2024-01-15'),
       };
 
-      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as unknown);
-      mockQueryFn.mockResolvedValueOnce([updatedRecord] as unknown);
+      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }]);
+      mockQueryFn.mockResolvedValueOnce([updatedRecord]);
 
       await testModel.update('uuid-123', {
-        name: null as unknown,
+        name: null as string,
       });
 
       expect(mockQueryFn).toHaveBeenCalledWith(

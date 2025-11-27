@@ -14,7 +14,10 @@ describe('StaffModel - positive', () => {
       .mockResolvedValueOnce([{}]) // insert result (ignored)
       .mockResolvedValueOnce([insertedRecord]); // select returns created
 
-    const result = await staffModel.create({ name: 'Alice' } as unknown);
+    const result = await staffModel.create({
+      accountId: 'account-123',
+      companyStaffRoleId: 'role-456',
+    });
 
     expect(dbMock).toHaveBeenCalled();
     expect(result).toEqual(insertedRecord);

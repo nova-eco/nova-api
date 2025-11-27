@@ -12,6 +12,11 @@ describe('StaffModel - negative', () => {
       .mockResolvedValueOnce([{}]) // insert result
       .mockResolvedValueOnce([]); // select returns nothing
 
-    await expect(staffModel.create({ name: 'Bob' } as unknown)).rejects.toThrow();
+    await expect(
+      staffModel.create({
+        accountId: 'account-789',
+        companyStaffRoleId: 'role-012',
+      }),
+    ).rejects.toThrow();
   });
 });
