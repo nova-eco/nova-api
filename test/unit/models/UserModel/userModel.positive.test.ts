@@ -1,5 +1,5 @@
-import { UserModel } from '../../../../src/models/UserModel';
 import { Database } from '../../../../src/models/Database';
+import { UserModel } from '../../../../src/models/UserModel';
 
 describe('UserModel - positive', () => {
   beforeEach(() => jest.restoreAllMocks());

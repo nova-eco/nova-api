@@ -17,7 +17,13 @@ CHANGELOG.md
 LICENSE.txt
 
 #
+# Hidden dirs to be ignored
+#
+.husky/
+
+#
 # Standard dirs to be ignored
 #
-deps/
+coverage/
+dist/
 node_modules/

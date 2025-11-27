@@ -1,5 +1,5 @@
-import { ServiceModel } from '../../../../src/models/ServiceModel';
 import { Database } from '../../../../src/models/Database';
+import { ServiceModel } from '../../../../src/models/ServiceModel';
 
 describe('ServiceModel - positive', () => {
   beforeEach(() => jest.restoreAllMocks());

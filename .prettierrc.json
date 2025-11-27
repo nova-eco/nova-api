@@ -15,10 +15,12 @@
   "jsxSingleQuote": false,
   "overrides": [
     {
-      "files": ["./Dockerfile", "compose.yaml", "test/**/*.test.ts"],
-      "options": {
-        "importOrder": []
-      }
+      "files": [
+        "./Dockerfile",
+        "./compose.yaml",
+        "./compose.override.yaml",
+        "test/**/*.test.ts"
+      ]
     }
   ],
   "plugins": [

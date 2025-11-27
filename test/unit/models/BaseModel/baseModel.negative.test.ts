@@ -1,6 +1,6 @@
-import { describe, it, expect, jest, beforeEach, afterEach } from '@jest/globals';
 import { BaseModel, BaseModelAttributes } from '@app/models/BaseModel';
 import { Database } from '@app/models/Database';
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 
 // Mock the Database module
 jest.mock('@app/models/Database');

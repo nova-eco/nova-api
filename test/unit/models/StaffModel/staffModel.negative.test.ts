@@ -1,5 +1,5 @@
-import { StaffModel } from '../../../../src/models/StaffModel';
 import { Database } from '../../../../src/models/Database';
+import { StaffModel } from '../../../../src/models/StaffModel';
 
 describe('StaffModel - negative', () => {
   beforeEach(() => jest.restoreAllMocks());
