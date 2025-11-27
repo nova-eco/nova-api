@@ -5,7 +5,7 @@ import { BaseModel, BaseModelAttributes } from './BaseModel';
 export interface SessionAttributes extends BaseModelAttributes {
   id: string;
   userId: string;
-  validUntilTimestamp: any;
+  validUntilTimestamp: number;
   created?: Date;
   modified?: Date;
 }
@@ -50,7 +50,7 @@ export class SessionModel extends BaseModel<SessionAttributes> {
    */
   async getLatestPassword(userId: string): Promise<{ password: string } | null> {
     const sql = sqlLoader(path.join(__dirname, '../sql/session_getLatestPassword.sql'));
-    const results = await this.executeQuery<any>(sql, [userId]);
+    const results = await this.executeQuery<{ password: string }>(sql, [userId]);
     return results[0] || null;
   }
 }
@@ -72,7 +72,7 @@ export class PasswordModel extends BaseModel<{
    */
   async getLatestPassword(userId: string): Promise<{ password: string } | null> {
     const sql = sqlLoader(path.join(__dirname, '../sql/password_getLatestPassword.sql'));
-    const results = await this.executeQuery<any>(sql, [userId]);
+    const results = await this.executeQuery<{ password: string }>(sql, [userId]);
     return results[0] || null;
   }
 }

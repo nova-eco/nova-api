@@ -1,1 +1,0 @@
-export { bookingRouter } from './bookingRouter';

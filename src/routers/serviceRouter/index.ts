@@ -1,1 +1,0 @@
-export { serviceRouter } from './serviceRouter';

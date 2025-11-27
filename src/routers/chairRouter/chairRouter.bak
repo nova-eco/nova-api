@@ -1,6 +1,0 @@
-import { routerOptions } from '@app/config';
-import { Router } from 'express';
-import { chairRouterPostChair } from './chairRouterPostChair';
-
-export const chairRouter = Router(routerOptions)
-  .use('/', chairRouterPostChair);

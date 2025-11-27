@@ -24,7 +24,7 @@ export class RegistrationModel extends BaseModel<RegistrationAttributes> {
   async checkValidRegistrationByEmail(
     email: string,
     currentDate: string,
-  ): Promise<any[]> {
+  ): Promise<unknown[]> {
     const sql = sqlLoader(
       path.join(__dirname, '../sql/registration_checkValidRegistrationByEmail.sql'),
     );

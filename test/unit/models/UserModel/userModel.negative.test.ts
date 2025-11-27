@@ -9,6 +9,6 @@ describe('UserModel - negative', () => {
 
     jest.spyOn(Database, 'query').mockResolvedValueOnce([{}]).mockResolvedValueOnce([]);
 
-    await expect(userModel.create({ username: 'nobody' } as any)).rejects.toThrow();
+    await expect(userModel.create({ username: 'nobody' } as unknown)).rejects.toThrow();
   });
 });

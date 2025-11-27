@@ -44,7 +44,7 @@ export abstract class BaseModel<T extends BaseModelAttributes> {
 
     const sql = `INSERT INTO ${this.tableName} (${fieldsList}) VALUES (${placeholders})`;
 
-    const result = await Database.query(sql, values);
+    await Database.query(sql, values);
 
     // MariaDB returns the insert result with insertId, but for UUID we need to get the LAST_INSERT_ID or query back
     // Since we're using UUIDs (not auto-increment), we need to retrieve the record differently
@@ -111,7 +111,7 @@ export abstract class BaseModel<T extends BaseModelAttributes> {
     orderBy?: string;
   }): Promise<T[]> {
     let sql = `SELECT * FROM ${this.tableName}`;
-    const params: any[] = [];
+    const params: unknown[] = [];
 
     // Add WHERE clause if provided
     if (options?.where) {
@@ -151,7 +151,7 @@ export abstract class BaseModel<T extends BaseModelAttributes> {
    * @param value The value to search for
    * @returns Array of matching records
    */
-  async findBy(field: keyof T, value: any): Promise<T[]> {
+  async findBy(field: keyof T, value: unknown): Promise<T[]> {
     const sql = `SELECT * FROM ${this.tableName} WHERE ${String(field)} = ?`;
     return Database.query<T>(sql, [value]);
   }
@@ -190,7 +190,7 @@ export abstract class BaseModel<T extends BaseModelAttributes> {
    */
   async count(where?: Partial<T>): Promise<number> {
     let sql = `SELECT COUNT(*) as total FROM ${this.tableName}`;
-    const params: any[] = [];
+    const params: unknown[] = [];
 
     if (where) {
       const fields = Object.keys(where);
@@ -213,7 +213,10 @@ export abstract class BaseModel<T extends BaseModelAttributes> {
    * @param params Optional query parameters
    * @returns Query results
    */
-  protected async executeQuery<R = any>(sql: string, params?: any[]): Promise<R[]> {
+  protected async executeQuery<R = unknown>(
+    sql: string,
+    params?: unknown[],
+  ): Promise<R[]> {
     return Database.query<R>(sql, params);
   }
 }

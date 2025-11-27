@@ -5,7 +5,7 @@
 # Purpose: Docker compose definition for nova-api                   #
 #          with overrides defined in compose.override.yaml          #
 #                                                                   #
-# Date:    20th November 2025                                       #
+# Date:    27th November 2025                                       #
 #                                                                   #
 # Author:  nova admin <admin@nova.eco>                              #
 #                                                                   #
@@ -16,14 +16,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NOVA_API__AUTHOR: '${NOVA_API__AUTHOR}'
+        NOVA_API__NAME: '${NOVA_API__NAME}'
+        NOVA_API__PORT: '${NOVA_API__PORT}'
+        API_NAME: '${API_NAME}'
+        API_PORT: '${API_PORT}'
     container_name: '${NOVA_API__CONTAINER_NAME}'
     env_file:
       - path: ./.env
         required: true
     ports:
-      - '${NOVA_API__PORT}:${NOVA_API__PORT}'
+      - '${NOVA_API__PORT}:${API_PORT}'
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:${NOVA_API__PORT}/healthcheck']
+      test: ['CMD', 'curl', '-f', 'http://localhost:${API_PORT}/healthcheck']
       interval: 10s
       timeout: 10s
       retries: 3

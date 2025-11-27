@@ -52,8 +52,8 @@ describe('BaseModel - Negative Tests', () => {
         email: 'test@example.com',
       };
 
-      mockQueryFn.mockResolvedValueOnce([{ insertId: 1 }] as any);
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([{ insertId: 1 }] as unknown);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       await expect(testModel.create(newData)).rejects.toThrow(
         'Failed to create record in test_table',
@@ -80,7 +80,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return null for malformed IDs', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       const result = await testModel.findByPk('');
 
@@ -121,7 +121,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return empty array when no records found', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       const result = await testModel.findAll({ where: { name: 'NonExistent' } });
 
@@ -140,7 +140,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return empty array when no matches found', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       const result = await testModel.findBy('email', 'nonexistent@example.com');
 
@@ -166,8 +166,8 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return null when record not found after update', async () => {
-      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as any);
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as unknown);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       const result = await testModel.update('uuid-123', { name: 'New Name' });
 
@@ -175,8 +175,8 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should handle update with non-existent ID', async () => {
-      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 0 }] as any);
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 0 }] as unknown);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       const result = await testModel.update('non-existent-id', { name: 'New Name' });
 
@@ -192,7 +192,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return 0 when count query returns empty result', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       const result = await testModel.count();
 
@@ -200,7 +200,7 @@ describe('BaseModel - Negative Tests', () => {
     });
 
     it('should return 0 when count query returns undefined total', async () => {
-      mockQueryFn.mockResolvedValueOnce([{ total: undefined }] as any);
+      mockQueryFn.mockResolvedValueOnce([{ total: undefined }] as unknown);
 
       const result = await testModel.count();
 
@@ -210,7 +210,7 @@ describe('BaseModel - Negative Tests', () => {
     it('should handle invalid where conditions', async () => {
       mockQueryFn.mockRejectedValueOnce(new Error('Invalid column name'));
 
-      await expect(testModel.count({ name: 'Test' } as any)).rejects.toThrow(
+      await expect(testModel.count({ name: 'Test' } as unknown)).rejects.toThrow(
         'Invalid column name',
       );
     });
@@ -218,10 +218,10 @@ describe('BaseModel - Negative Tests', () => {
 
   describe('edge cases', () => {
     it('should handle SQL injection attempts in findOne', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
-      const result = await testModel.findOne({
-        email: "'; DROP TABLE users; --" as any,
+      await testModel.findOne({
+        email: "'; DROP TABLE users; --" as unknown,
       });
 
       expect(mockQueryFn).toHaveBeenCalledWith(
@@ -239,7 +239,7 @@ describe('BaseModel - Negative Tests', () => {
         modified: new Date(),
       }));
 
-      mockQueryFn.mockResolvedValueOnce(largeArray as any);
+      mockQueryFn.mockResolvedValueOnce(largeArray as unknown);
 
       const result = await testModel.findAll();
 
@@ -255,11 +255,11 @@ describe('BaseModel - Negative Tests', () => {
         modified: new Date('2024-01-15'),
       };
 
-      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as any);
-      mockQueryFn.mockResolvedValueOnce([updatedRecord] as any);
+      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as unknown);
+      mockQueryFn.mockResolvedValueOnce([updatedRecord] as unknown);
 
-      const result = await testModel.update('uuid-123', {
-        name: null as any,
+      await testModel.update('uuid-123', {
+        name: null as unknown,
       });
 
       expect(mockQueryFn).toHaveBeenCalledWith(

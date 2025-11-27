@@ -23,7 +23,7 @@ export class AppointmentModel extends BaseModel<AppointmentAttributes> {
    * @param staffId Staff ID
    * @returns Array with appointment if clash found (empty if no clash)
    */
-  async checkAppointmentClash(bookingId: string, staffId: string): Promise<any[]> {
+  async checkAppointmentClash(bookingId: string, staffId: string): Promise<unknown[]> {
     const sql = sqlLoader(
       path.join(__dirname, '../sql/appointment_checkAppointmentClash.sql'),
     );

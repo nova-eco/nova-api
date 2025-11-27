@@ -7,7 +7,7 @@ import type { Config } from 'jest';
  *                                                                   *
  * AUTHOR:      Nova Admin <admin@nova.eco>                          *
  *                                                                   *
- * DATE:        12th October 2025                                    *
+ * DATE:        27th November 2025                                   *
  *                                                                   *
  * PURPOSE:     This script exports a Jest config object defined     *
  *              in relation to the 'TEST_TYPE' env var.              *

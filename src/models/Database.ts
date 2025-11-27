@@ -16,8 +16,6 @@ export class Database {
         connectionLimit: 10,
         acquireTimeout: 30000,
       });
-
-      console.log('Database connection pool initialized');
     }
 
     return this.pool;
@@ -37,7 +35,7 @@ export class Database {
   /**
    * Execute a query directly
    */
-  static async query<T = any>(sql: string, params?: any[]): Promise<T[]> {
+  static async query<T = unknown>(sql: string, params?: unknown[]): Promise<T[]> {
     const conn = await this.getConnection();
     try {
       const results = await conn.query(sql, params);
@@ -54,7 +52,6 @@ export class Database {
     if (this.pool) {
       await this.pool.end();
       this.pool = null;
-      console.log('Database connection pool closed');
     }
   }
 }

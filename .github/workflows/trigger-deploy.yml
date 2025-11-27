@@ -1,0 +1,56 @@
+#####################################################################
+#                                                                   #
+# Workflow: trigger-deploy.yml                                      #
+#                                                                   #
+# Purpose:  Trigger upstream nova-deploy package rebuild after      #
+#           nova-api Docker image is published                      #
+#                                                                   #
+# Date:     27th November 2025                                      #
+#                                                                   #
+# Author:   Nova Admin <admin@nova.eco>                             #
+#                                                                   #
+#####################################################################
+
+name: Trigger Deploy Rebuild
+
+on:
+  workflow_run:
+    workflows: ['Docker Build & Publish']
+    types:
+      - completed
+    branches:
+      - master
+
+jobs:
+  trigger-upstream:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    permissions:
+      contents: read
+
+    steps:
+      - name: Trigger nova-deploy rebuild
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.DEPLOY_TRIGGER_TOKEN }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: 'nova-eco',
+              repo: 'nova-deploy',
+              event_type: 'nova-api-updated',
+              client_payload: {
+                source: 'nova-api',
+                ref: '${{ github.ref }}',
+                sha: '${{ github.sha }}',
+                image_tag: 'latest',
+                triggered_by: '${{ github.actor }}'
+              }
+            });
+
+      - name: Trigger summary
+        if: success()
+        run: |
+          echo "✅ Successfully triggered nova-deploy rebuild"
+          echo "📦 Source: nova-api"
+          echo "🏷️  Image tag: latest"
+          echo "🔗 Triggered by: ${{ github.actor }}"

@@ -48,9 +48,9 @@ describe('BaseModel - Positive Tests', () => {
       };
 
       // Mock INSERT query
-      mockQueryFn.mockResolvedValueOnce([{ insertId: 1 }] as any);
+      mockQueryFn.mockResolvedValueOnce([{ insertId: 1 }] as unknown);
       // Mock SELECT query to return the created record
-      mockQueryFn.mockResolvedValueOnce([createdRecord] as any);
+      mockQueryFn.mockResolvedValueOnce([createdRecord] as unknown);
 
       const result = await testModel.create(newData);
 
@@ -77,8 +77,8 @@ describe('BaseModel - Positive Tests', () => {
         modified: new Date('2024-01-15'),
       };
 
-      mockQueryFn.mockResolvedValueOnce([{ insertId: 1 }] as any);
-      mockQueryFn.mockResolvedValueOnce([createdRecord] as any);
+      mockQueryFn.mockResolvedValueOnce([{ insertId: 1 }] as unknown);
+      mockQueryFn.mockResolvedValueOnce([createdRecord] as unknown);
 
       const result = await testModel.create(newData);
 
@@ -98,7 +98,7 @@ describe('BaseModel - Positive Tests', () => {
         modified: new Date('2024-01-01'),
       };
 
-      mockQueryFn.mockResolvedValueOnce([mockRecord] as any);
+      mockQueryFn.mockResolvedValueOnce([mockRecord] as unknown);
 
       const result = await testModel.findByPk('uuid-123');
 
@@ -110,7 +110,7 @@ describe('BaseModel - Positive Tests', () => {
     });
 
     it('should return null when record not found', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       const result = await testModel.findByPk('non-existent-id');
 
@@ -128,7 +128,7 @@ describe('BaseModel - Positive Tests', () => {
         modified: new Date('2024-01-01'),
       };
 
-      mockQueryFn.mockResolvedValueOnce([mockRecord] as any);
+      mockQueryFn.mockResolvedValueOnce([mockRecord] as unknown);
 
       const result = await testModel.findOne({ email: 'test@example.com' });
 
@@ -148,7 +148,7 @@ describe('BaseModel - Positive Tests', () => {
         modified: new Date('2024-01-01'),
       };
 
-      mockQueryFn.mockResolvedValueOnce([mockRecord] as any);
+      mockQueryFn.mockResolvedValueOnce([mockRecord] as unknown);
 
       const result = await testModel.findOne({
         name: 'Test User',
@@ -163,7 +163,7 @@ describe('BaseModel - Positive Tests', () => {
     });
 
     it('should return null when no matching record found', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       const result = await testModel.findOne({ email: 'nonexistent@example.com' });
 
@@ -197,7 +197,7 @@ describe('BaseModel - Positive Tests', () => {
         },
       ];
 
-      mockQueryFn.mockResolvedValueOnce(mockRecords as any);
+      mockQueryFn.mockResolvedValueOnce(mockRecords as unknown);
 
       const result = await testModel.findAll();
 
@@ -217,7 +217,7 @@ describe('BaseModel - Positive Tests', () => {
         },
       ];
 
-      mockQueryFn.mockResolvedValueOnce(mockRecords as any);
+      mockQueryFn.mockResolvedValueOnce(mockRecords as unknown);
 
       const result = await testModel.findAll({
         where: { name: 'Test User' },
@@ -241,7 +241,7 @@ describe('BaseModel - Positive Tests', () => {
         },
       ];
 
-      mockQueryFn.mockResolvedValueOnce(mockRecords as any);
+      mockQueryFn.mockResolvedValueOnce(mockRecords as unknown);
 
       const result = await testModel.findAll({ limit: 10 });
 
@@ -252,7 +252,7 @@ describe('BaseModel - Positive Tests', () => {
     it('should find records with limit and offset', async () => {
       const mockRecords: TestModelAttributes[] = [];
 
-      mockQueryFn.mockResolvedValueOnce(mockRecords as any);
+      mockQueryFn.mockResolvedValueOnce(mockRecords as unknown);
 
       const result = await testModel.findAll({
         limit: 10,
@@ -269,7 +269,7 @@ describe('BaseModel - Positive Tests', () => {
     it('should find records with orderBy', async () => {
       const mockRecords: TestModelAttributes[] = [];
 
-      mockQueryFn.mockResolvedValueOnce(mockRecords as any);
+      mockQueryFn.mockResolvedValueOnce(mockRecords as unknown);
 
       const result = await testModel.findAll({
         orderBy: 'created DESC',
@@ -285,7 +285,7 @@ describe('BaseModel - Positive Tests', () => {
     it('should find records with all options combined', async () => {
       const mockRecords: TestModelAttributes[] = [];
 
-      mockQueryFn.mockResolvedValueOnce(mockRecords as any);
+      mockQueryFn.mockResolvedValueOnce(mockRecords as unknown);
 
       const result = await testModel.findAll({
         where: { name: 'Test' },
@@ -321,7 +321,7 @@ describe('BaseModel - Positive Tests', () => {
         },
       ];
 
-      mockQueryFn.mockResolvedValueOnce(mockRecords as any);
+      mockQueryFn.mockResolvedValueOnce(mockRecords as unknown);
 
       const result = await testModel.findBy('name', 'Test User');
 
@@ -344,8 +344,8 @@ describe('BaseModel - Positive Tests', () => {
         modified: new Date('2024-01-15'),
       };
 
-      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as any);
-      mockQueryFn.mockResolvedValueOnce([updatedRecord] as any);
+      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as unknown);
+      mockQueryFn.mockResolvedValueOnce([updatedRecord] as unknown);
 
       const result = await testModel.update('uuid-123', {
         name: 'Updated User',
@@ -369,8 +369,8 @@ describe('BaseModel - Positive Tests', () => {
         modified: new Date('2024-01-15'),
       };
 
-      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as any);
-      mockQueryFn.mockResolvedValueOnce([updatedRecord] as any);
+      mockQueryFn.mockResolvedValueOnce([{ affectedRows: 1 }] as unknown);
+      mockQueryFn.mockResolvedValueOnce([updatedRecord] as unknown);
 
       const result = await testModel.update('uuid-123', {
         name: 'New Name',
@@ -394,7 +394,7 @@ describe('BaseModel - Positive Tests', () => {
         modified: new Date('2024-01-01'),
       };
 
-      mockQueryFn.mockResolvedValueOnce([existingRecord] as any);
+      mockQueryFn.mockResolvedValueOnce([existingRecord] as unknown);
 
       const result = await testModel.update('uuid-123', {});
 
@@ -405,7 +405,7 @@ describe('BaseModel - Positive Tests', () => {
 
   describe('count', () => {
     it('should count all records without filter', async () => {
-      mockQueryFn.mockResolvedValueOnce([{ total: 42 }] as any);
+      mockQueryFn.mockResolvedValueOnce([{ total: 42 }] as unknown);
 
       const result = await testModel.count();
 
@@ -417,7 +417,7 @@ describe('BaseModel - Positive Tests', () => {
     });
 
     it('should count records with where condition', async () => {
-      mockQueryFn.mockResolvedValueOnce([{ total: 5 }] as any);
+      mockQueryFn.mockResolvedValueOnce([{ total: 5 }] as unknown);
 
       const result = await testModel.count({ name: 'Test User' });
 
@@ -429,7 +429,7 @@ describe('BaseModel - Positive Tests', () => {
     });
 
     it('should count records with multiple conditions', async () => {
-      mockQueryFn.mockResolvedValueOnce([{ total: 2 }] as any);
+      mockQueryFn.mockResolvedValueOnce([{ total: 2 }] as unknown);
 
       const result = await testModel.count({
         name: 'Test User',
@@ -444,7 +444,7 @@ describe('BaseModel - Positive Tests', () => {
     });
 
     it('should return 0 when no results', async () => {
-      mockQueryFn.mockResolvedValueOnce([] as any);
+      mockQueryFn.mockResolvedValueOnce([] as unknown);
 
       const result = await testModel.count();
 

@@ -14,7 +14,7 @@ export interface BookingPreAttributes extends BaseModelAttributes {
   startDateMonth: number;
   startDateMonthDay: number;
   startDateYear: number;
-  validUntilTimestampSeconds: any;
+  validUntilTimestampSeconds: number;
   created?: Date;
   modified?: Date;
 }

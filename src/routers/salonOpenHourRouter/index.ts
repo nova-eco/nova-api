@@ -1,1 +1,0 @@
-export { salonOpenHourRouter } from './salonOpenHourRouter';

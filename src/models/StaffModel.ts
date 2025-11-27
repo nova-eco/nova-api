@@ -52,7 +52,16 @@ export class StaffModel extends BaseModel<StaffAttributes> {
     const sql = sqlLoader(
       path.join(__dirname, '../sql/staff_findWithAccountAndUser.sql'),
     );
-    const results = await this.executeQuery<any>(sql, [staffId]);
+    const results = await this.executeQuery<{
+      staffId: string;
+      companyStaffRoleId: string;
+      accountId: string;
+      companyId: string;
+      userId: string;
+      username: string;
+      forename: string;
+      surname: string;
+    }>(sql, [staffId]);
     return results[0] || null;
   }
 

@@ -1,165 +1,71 @@
+export { AccountModel } from './AccountModel';
+export { ActionModel } from './ActionModel';
+export { ActionRegistrationMessageEmailModel } from './ActionRegistrationMessageEmailModel';
+export { AppointmentClientModel } from './AppointmentClientModel';
+export { AppointmentLeadModel } from './AppointmentLeadModel';
+export { AppointmentModel } from './AppointmentModel';
+export { AppointmentServiceModel } from './AppointmentServiceModel';
+export { BaseModel } from './BaseModel';
+export { BookingModel } from './BookingModel';
+export { BookingPreModel } from './BookingPreModel';
+export { ChairAppointmentModel } from './ChairAppointmentModel';
+export { ChairModel_old_backup } from './ChairModel_old_backup';
+export { ChairModel } from './ChairModel';
+export { ChairServiceModel } from './ChairServiceModel';
+export { ChairTypeModel } from './ChairTypeModel';
+export { CompanyBookingCompletionRequirementModel } from './CompanyBookingCompletionRequirementModel';
+export { CompanyModel } from './CompanyModel';
+export { CompanyProductBookingCompletionRequirementModel } from './CompanyProductBookingCompletionRequirementModel';
+export { CompanyProductModel } from './CompanyProductModel';
+export { CompanyProductPeriodModel } from './CompanyProductPeriodModel';
+export { CompanyProductPeriodRoleTypeModel } from './CompanyProductPeriodRoleTypeModel';
+export { CompanyProductPriceModel } from './CompanyProductPriceModel';
+export { CompanyProductPriceTypeModel } from './CompanyProductPriceTypeModel';
+export { CompanyStaffRoleCustomModel } from './CompanyStaffRoleCustomModel';
+export { CompanyStaffRoleDefaultModel } from './CompanyStaffRoleDefaultModel';
+export { CompanyStaffRoleModel } from './CompanyStaffRoleModel';
+export { CurrencyModel } from './CurrencyModel';
 export { Database } from './Database';
-export { BaseModel, BaseModelAttributes } from './BaseModel';
-
-// Generated Models
-export { AccountModel, AccountAttributes } from './AccountModel';
-export { AppointmentModel, AppointmentAttributes } from './AppointmentModel';
-export { BookingPreModel, BookingPreAttributes } from './BookingPreModel';
-export { ChairModel, ChairAttributes } from './ChairModel';
-export { ChairTypeModel, ChairTypeAttributes } from './ChairTypeModel';
-export { CompanyModel, CompanyAttributes } from './CompanyModel';
-export {
-  CompanyBookingCompletionRequirementModel,
-  CompanyBookingCompletionRequirementAttributes,
-} from './CompanyBookingCompletionRequirementModel';
-export { CompanyProductModel, CompanyProductAttributes } from './CompanyProductModel';
-export {
-  CompanyProductBookingCompletionRequirementModel,
-  CompanyProductBookingCompletionRequirementAttributes,
-} from './CompanyProductBookingCompletionRequirementModel';
-export {
-  CompanyProductPeriodModel,
-  CompanyProductPeriodAttributes,
-} from './CompanyProductPeriodModel';
-export {
-  CompanyProductPeriodRoleTypeModel,
-  CompanyProductPeriodRoleTypeAttributes,
-} from './CompanyProductPeriodRoleTypeModel';
-export {
-  CompanyProductPriceModel,
-  CompanyProductPriceAttributes,
-} from './CompanyProductPriceModel';
-export {
-  CompanyProductPriceTypeModel,
-  CompanyProductPriceTypeAttributes,
-} from './CompanyProductPriceTypeModel';
-export {
-  CompanyStaffRoleModel,
-  CompanyStaffRoleAttributes,
-} from './CompanyStaffRoleModel';
-export {
-  CompanyStaffRoleCustomModel,
-  CompanyStaffRoleCustomAttributes,
-} from './CompanyStaffRoleCustomModel';
-export {
-  CompanyStaffRoleDefaultModel,
-  CompanyStaffRoleDefaultAttributes,
-} from './CompanyStaffRoleDefaultModel';
-export { CurrencyModel, CurrencyAttributes } from './CurrencyModel';
-export { GeoCityModel, GeoCityAttributes } from './GeoCityModel';
-export { GeoCountryModel, GeoCountryAttributes } from './GeoCountryModel';
-export { LocationModel, LocationAttributes } from './LocationModel';
-export { OpenHourModel, OpenHourAttributes } from './OpenHourModel';
-export { OpenHourTypeModel, OpenHourTypeAttributes } from './OpenHourTypeModel';
-export {
-  OrganisationBookingCompletionRequirementModel,
-  OrganisationBookingCompletionRequirementAttributes,
-} from './OrganisationBookingCompletionRequirementModel';
-export {
-  OrganisationProductPeriodRoleTypeModel,
-  OrganisationProductPeriodRoleTypeAttributes,
-} from './OrganisationProductPeriodRoleTypeModel';
-export { ProductModel, ProductAttributes } from './ProductModel';
-export { RegistrationModel, RegistrationAttributes } from './RegistrationModel';
-export {
-  RegistrationCompanyModel,
-  RegistrationCompanyAttributes,
-} from './RegistrationCompanyModel';
-export {
-  RegistrationCompanyStaffModel,
-  RegistrationCompanyStaffAttributes,
-} from './RegistrationCompanyStaffModel';
-export {
-  RegistrationRegistrantModel,
-  RegistrationRegistrantAttributes,
-} from './RegistrationRegistrantModel';
-export {
-  RegistrationMessageModel,
-  RegistrationMessageAttributes,
-} from './RegistrationMessageModel';
-export {
-  RegistrationVerifiedModel,
-  RegistrationVerifiedAttributes,
-} from './RegistrationVerifiedModel';
-
-// Login related models
-export { LoginModel, LoginAttributes } from './LoginModel';
-export { LoginErrorModel, LoginErrorAttributes } from './LoginErrorModel';
-export { LoginIpModel, LoginIpAttributes } from './LoginIpModel';
-export { LoginSessionModel, LoginSessionAttributes } from './LoginSessionModel';
-export { LoginUsernameModel, LoginUsernameAttributes } from './LoginUsernameModel';
-
-// Action / email / company registration setting models
-export { ActionModel, ActionAttributes } from './ActionModel';
-export {
-  ActionRegistrationMessageEmailModel,
-  ActionRegistrationMessageEmailAttributes,
-} from './ActionRegistrationMessageEmailModel';
-export { CompanyRegistrationSettingModel } from './CompanyRegistrationSettingModel';
-export { SessionModel, SessionAttributes, PasswordModel } from './SessionModel';
-export { StaffModel, StaffAttributes } from './StaffModel';
-export {
-  StaffRoleDefaultModel,
-  StaffRoleDefaultAttributes,
-} from './StaffRoleDefaultModel';
-export {
-  TemporalDurationModel,
-  TemporalDurationAttributes,
-} from './TemporalDurationModel';
-export { UserModel, UserAttributes } from './UserModel';
-export { UserEmailModel, UserEmailAttributes } from './UserEmailModel';
-export { WorkplaceModel, WorkplaceAttributes } from './WorkplaceModel';
-export { WorkplaceChairModel, WorkplaceChairAttributes } from './WorkplaceChairModel';
-export {
-  WorkplaceChairCompanyProductModel,
-  WorkplaceChairCompanyProductAttributes,
-} from './WorkplaceChairCompanyProductModel';
-export {
-  WorkplaceOpenHourModel,
-  WorkplaceOpenHourAttributes,
-} from './WorkplaceOpenHourModel';
-
-// New Renamed Models
-export { SalonModel, SalonAttributes } from './SalonModel';
-export { SalonOpenHourModel, SalonOpenHourAttributes } from './SalonOpenHourModel';
-export { ChairServiceModel, ChairServiceAttributes } from './ChairServiceModel';
-export { SeatModel, SeatAttributes } from './SeatModel';
-export { SeatTypeModel, SeatTypeAttributes } from './SeatTypeModel';
-export { ServiceModel, ServiceAttributes } from './ServiceModel';
-export {
-  ServiceBookingCompletionRequirementModel,
-  ServiceBookingCompletionRequirementAttributes,
-} from './ServiceBookingCompletionRequirementModel';
-export { ServicePeriodModel, ServicePeriodAttributes } from './ServicePeriodModel';
-export {
-  ServicePeriodRoleTypeModel,
-  ServicePeriodRoleTypeAttributes,
-} from './ServicePeriodRoleTypeModel';
-export { ServicePriceModel, ServicePriceAttributes } from './ServicePriceModel';
-export {
-  ServicePriceTypeModel,
-  ServicePriceTypeAttributes,
-} from './ServicePriceTypeModel';
-
-// Additional models created to replace legacy Sequelize models
-export { OrderModel, OrderAttributes } from './OrderModel';
-export { OrderBalanceModel, OrderBalanceAttributes } from './OrderBalanceModel';
-export {
-  OrderServicePriceModel,
-  OrderServicePriceAttributes,
-} from './OrderServicePriceModel';
-export { BookingModel, BookingAttributes } from './BookingModel';
-export {
-  AppointmentClientModel,
-  AppointmentClientAttributes,
-} from './AppointmentClientModel';
-export {
-  AppointmentServiceModel,
-  AppointmentServiceAttributes,
-} from './AppointmentServiceModel';
-export { AppointmentLeadModel, AppointmentLeadAttributes } from './AppointmentLeadModel';
-export {
-  ChairAppointmentModel,
-  ChairAppointmentAttributes,
-} from './ChairAppointmentModel';
-export { ServiceLeadModel, ServiceLeadAttributes } from './ServiceLeadModel';
+export { GeoCityModel } from './GeoCityModel';
+export { GeoCountryModel } from './GeoCountryModel';
+export { LocationModel } from './LocationModel';
+export { LoginErrorModel } from './LoginErrorModel';
+export { LoginIpModel } from './LoginIpModel';
+export { LoginModel } from './LoginModel';
+export { LoginSessionModel } from './LoginSessionModel';
+export { LoginUsernameModel } from './LoginUsernameModel';
+export { OpenHourModel } from './OpenHourModel';
+export { OpenHourTypeModel } from './OpenHourTypeModel';
+export { OrderBalanceModel } from './OrderBalanceModel';
+export { OrderModel } from './OrderModel';
+export { OrderServicePriceModel } from './OrderServicePriceModel';
+export { OrganisationBookingCompletionRequirementModel } from './OrganisationBookingCompletionRequirementModel';
+export { OrganisationProductPeriodRoleTypeModel } from './OrganisationProductPeriodRoleTypeModel';
+export { ProductModel } from './ProductModel';
+export { RegistrationCompanyModel } from './RegistrationCompanyModel';
+export { RegistrationCompanyStaffModel } from './RegistrationCompanyStaffModel';
+export { RegistrationMessageModel } from './RegistrationMessageModel';
+export { RegistrationModel } from './RegistrationModel';
+export { RegistrationRegistrantModel } from './RegistrationRegistrantModel';
+export { RegistrationVerifiedModel } from './RegistrationVerifiedModel';
+export { SalonModel } from './SalonModel';
+export { SalonOpenHourModel } from './SalonOpenHourModel';
+export { SeatModel } from './SeatModel';
+export { SeatTypeModel } from './SeatTypeModel';
+export { ServiceBookingCompletionRequirementModel } from './ServiceBookingCompletionRequirementModel';
+export { ServiceLeadModel } from './ServiceLeadModel';
+export { ServiceModel } from './ServiceModel';
+export { ServicePeriodModel } from './ServicePeriodModel';
+export { ServicePeriodRoleTypeModel } from './ServicePeriodRoleTypeModel';
+export { ServicePriceModel } from './ServicePriceModel';
+export { ServicePriceTypeModel } from './ServicePriceTypeModel';
+export { SessionModel } from './SessionModel';
+export { StaffModel } from './StaffModel';
+export { StaffRoleDefaultModel } from './StaffRoleDefaultModel';
+export { TemporalDurationModel } from './TemporalDurationModel';
+export { UserEmailModel } from './UserEmailModel';
+export { UserModel } from './UserModel';
+export { WorkplaceChairCompanyProductModel } from './WorkplaceChairCompanyProductModel';
+export { WorkplaceChairModel } from './WorkplaceChairModel';
+export { WorkplaceModel } from './WorkplaceModel';
+export { WorkplaceOpenHourModel } from './WorkplaceOpenHourModel';

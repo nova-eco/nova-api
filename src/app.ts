@@ -1,15 +1,15 @@
 import { openApiFileContentsJson, openApiFilePath } from '@app/config';
 import {
-  bookingRouter,
-  chairRouter,
-  locationRouter,
+  // bookingRouter,
+  // chairRouter,
+  // locationRouter,
   loginRouter,
-  registrationRouter,
-  salonOpenHourRouter,
-  salonRouter,
-  serviceRouter,
-  setupRouter,
-  staffRouter,
+  // registrationRouter,
+  // salonOpenHourRouter,
+  // salonRouter,
+  // serviceRouter,
+  // setupRouter,
+  // staffRouter,
 } from '@app/routers';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -38,18 +38,18 @@ app.use(
 
 // V2 API Routes
 app
-  .use('/v2/booking', bookingRouter)
-  .use('/v2/chair', chairRouter)
-  .use('/v2/location', locationRouter)
-  .use('/v2/login', loginRouter)
-  .use('/v2/registration', registrationRouter)
-  .use('/v2/salon', salonRouter)
-  .use('/v2/salon-open-hour', salonOpenHourRouter)
-  .use('/v2/service', serviceRouter)
-  .use('/v2/setup', setupRouter)
-  .use('/v2/staff', staffRouter);
+  // .use('/v2/booking', bookingRouter)
+  // .use('/v2/chair', chairRouter)
+  // .use('/v2/location', locationRouter)
+  .use('/v2/login', loginRouter);
+// .use('/v2/registration', registrationRouter)
+// .use('/v2/salon', salonRouter)
+// .use('/v2/salon-open-hour', salonOpenHourRouter)
+// .use('/v2/service', serviceRouter)
+// .use('/v2/setup', setupRouter)
+// .use('/v2/staff', staffRouter);
 
-app.use((err, _req, res, _next) => {
+app.use((err, _req, res) => {
   const { message } = err;
   const payload = {
     message,
