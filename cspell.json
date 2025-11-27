@@ -7,7 +7,7 @@
     "dist",
     "node_modules",
     "package.json",
-		"test/fixtures/*"
+    "test/fixtures/*"
   ],
   "language": "en-gb",
   "languageSettings": [
@@ -17,14 +17,14 @@
   ],
   "version": "0.2",
   "words": [
-		"addgroup",
-		"adduser",
-		"Buildx",
-		"conn",
+    "addgroup",
+    "adduser",
+    "Buildx",
+    "conn",
     "companyname",
     "DATEONLY",
     "exim",
-		"hashedpassword",
+    "hashedpassword",
     "Healthcheck",
     "healthcheck",
     "jstrachan",
@@ -33,13 +33,13 @@
     "loreal",
     "NOVA",
     "nova",
-		"Pres",
+    "Pres",
     "untruthy",
     "UUID",
     "UUIDV",
-		"validuntil",
+    "validuntil",
     "vars",
-		"wccp",
-		"wpts"
+    "wccp",
+    "wpts"
   ]
 }
