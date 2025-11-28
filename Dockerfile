@@ -84,9 +84,5 @@ USER nodejs
 # Expose port from environment variable
 EXPOSE ${NOVA_API_PORT}
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:${NOVA_API_PORT}/healthcheck', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
-
 # Start the application
 CMD ["node", "dist/index.js"]
