@@ -9,17 +9,11 @@ export class Database {
   static async init(): Promise<mariadb.Pool> {
     try {
       if (!this.pool) {
-        /* eslint no-console: ["error", { allow: ["log"] }] */
-        console.log({ NOVA_API_DB_HOST: process.env.NOVA_API_DB_HOST });
-        console.log({ NOVA_API_DB_USER: process.env.NOVA_API_DB_USER });
-        console.log({ NOVA_API_DB_NAME: process.env.NOVA_API_DB_NAME });
-        console.log({ NOVA_API_DB_PASSWORD: process.env.NOVA_API_DB_PASSWORD });
-
         this.pool = mariadb.createPool({
-          host: process.env.NOVA_API_DB_HOST || 'localhost',
-          user: process.env.NOVA_API_DB_USER || 'nova_api',
-          password: process.env.NOVA_API_DB_PASSWORD || 'nova_api_pass',
-          database: process.env.NOVA_API_DB_NAME || 'nova',
+          host: process.env.NOVA_API_DB_HOST,
+          user: process.env.NOVA_API_DB_USER,
+          password: process.env.NOVA_API_DB_PASSWORD,
+          database: process.env.NOVA_API_DB_NAME,
           connectionLimit: 10,
           acquireTimeout: 30000,
         });

@@ -1723,6 +1723,28 @@
           }
         }
       }
+    },
+    "/healthcheck": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Staff updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Staff"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
     }
   },
   "servers": [
